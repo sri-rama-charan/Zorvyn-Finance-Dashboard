@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react'
 import './App.css'
 
 const accountData = {
-  'Personal USD': {
-    label: 'Personal USD',
-    currency: 'USD',
+  'Personal INR': {
+    label: 'Personal INR',
+    currency: 'INR',
     balance: 31180,
     balanceDelta: '+4.3% from last month',
     cardNumber: '**** 3728',
@@ -173,8 +173,8 @@ const accountData = {
   },
 }
 
-const formatCurrency = (amount, currency = 'USD') =>
-  new Intl.NumberFormat('en-US', {
+const formatCurrency = (amount, currency = 'INR') =>
+  new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
     maximumFractionDigits: Math.abs(amount) >= 1000 ? 0 : 2,
@@ -184,12 +184,13 @@ const formatSignedPercent = (value) => (value.startsWith('-') ? value : value)
 
 function App() {
   const [role, setRole] = useState('Viewer')
-  const [activeAccount, setActiveAccount] = useState('Personal USD')
+  const [activeAccount, setActiveAccount] = useState('Personal INR')
   const [search, setSearch] = useState('')
   const [transactionType, setTransactionType] = useState('all')
   const [sortBy, setSortBy] = useState('date-desc')
   const [view, setView] = useState('dashboard')
   const [insightRange, setInsightRange] = useState('monthly')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   const account = accountData[activeAccount]
 
@@ -339,7 +340,7 @@ function App() {
             </div>
 
             <div className="topbar-actions">
-              <button type="button" className="ghost-btn" onClick={() => setView('dashboard')}>
+                <button type="button" className="ghost-btn back-btn" onClick={() => setView('dashboard')}>
                 Back to dashboard
               </button>
               <div className="range-switcher" role="tablist" aria-label="Insight range">
@@ -503,60 +504,71 @@ function App() {
 
   return (
     <div className="dashboard-shell">
-      <aside className="sidebar">
-        <div className="brand-mark" aria-hidden="true">
-          ▲
+      <div className={sidebarOpen ? 'sidebar-backdrop open' : 'sidebar-backdrop'} onClick={() => setSidebarOpen(false)} aria-hidden="true"></div>
+
+      <aside className={sidebarOpen ? 'sidebar open' : 'sidebar'}>
+        <button type="button" className="sidebar-close" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">
+          ✕
+        </button>
+        <div className="sidebar-brand">
+          <span className="brand-mark" aria-hidden="true">
+            ●●
+          </span>
+          <span className="brand-name">Zorvyn</span>
         </div>
         <nav className="sidebar-nav" aria-label="Primary navigation">
-          <button className="nav-item active" type="button">
-            Dashboard
-          </button>
-          <button className="nav-item" type="button">
-            Transactions
-          </button>
-          <button className="nav-item" type="button">
-            Reports
-          </button>
-          <button className="nav-item" type="button">
-            Insights
-          </button>
-          <button className="nav-item" type="button">
-            Settings
-          </button>
+          <button className="nav-item active" type="button"><span className="nav-icon">⌂</span><span className="nav-label">Dashboard</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">▦</span><span className="nav-label">Payments</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">↔</span><span className="nav-label">Transactions</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">▤</span><span className="nav-label">Invoices</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">▭</span><span className="nav-label">Cards</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">◍</span><span className="nav-label">Saving Plans</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">◈</span><span className="nav-label">Investments</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">✉</span><span className="nav-label">Inbox</span><span className="badge">99</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">☼</span><span className="nav-label">Promos</span></button>
+          <button className="nav-item" type="button"><span className="nav-icon">✦</span><span className="nav-label">Insights</span></button>
         </nav>
+
+        <article className="sidebar-cta">
+          <div className="sidebar-cta-top">
+            <span className="sidebar-cta-icon">🔒</span>
+            <div>
+              <p className="sidebar-cta-title">Gain full access</p>
+              <p className="sidebar-cta-text">Unlock advanced analytics and graphs</p>
+            </div>
+          </div>
+          <button type="button" className="sidebar-cta-btn">Get Pro</button>
+        </article>
       </aside>
 
       <main className="dashboard-main">
         <header className="topbar">
-          <div>
-            <p className="eyebrow">Finance Dashboard</p>
+          <div className="topbar-title">
+            <button type="button" className="icon-btn sidebar-toggle" aria-label="Open sidebar" onClick={() => setSidebarOpen(true)}>
+              ☰
+            </button>
             <h1>Welcome back</h1>
           </div>
 
           <div className="topbar-actions">
-            <input
-              className="search"
-              type="search"
-              placeholder="Search transactions"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-            />
+            <div className="topbar-icons" aria-label="Top bar actions">
+              <button type="button" className="icon-btn" aria-label="Notifications">
+                🔔
+                <span className="dot-badge" aria-hidden="true"></span>
+              </button>
+            </div>
 
             <label className="role-select" htmlFor="role-switch">
-              <span>Role</span>
-              <select
-                id="role-switch"
-                value={role}
-                onChange={(event) => setRole(event.target.value)}
-              >
+              <select id="role-switch" value={role} onChange={(event) => setRole(event.target.value)}>
                 <option>Viewer</option>
                 <option>Admin</option>
               </select>
             </label>
 
-            <button className="primary-btn" type="button" disabled={role === 'Viewer'}>
-              + Add
-            </button>
+            <div className="topbar-profile">
+              <div className="profile-avatar" aria-hidden="true">AF</div>
+            </div>
+
           </div>
         </header>
 
@@ -578,14 +590,6 @@ function App() {
                 </div>
                 <p className="value">{formatCurrency(account.income, account.currency)}</p>
                 <p className="meta">{account.incomeMeta}</p>
-                <div className="mini-spark" aria-hidden="true">
-                  <span style={{ height: '26%' }}></span>
-                  <span style={{ height: '42%' }}></span>
-                  <span style={{ height: '35%' }}></span>
-                  <span style={{ height: '58%' }}></span>
-                  <span style={{ height: '72%' }}></span>
-                  <span style={{ height: '64%' }}></span>
-                </div>
               </article>
 
               <article className="surface metric-card kpi-card expense-card">
@@ -596,14 +600,6 @@ function App() {
                 </div>
                 <p className="value">{formatCurrency(account.expenses, account.currency)}</p>
                 <p className="meta">{account.expensesMeta}</p>
-                <div className="mini-spark" aria-hidden="true">
-                  <span style={{ height: '58%' }}></span>
-                  <span style={{ height: '54%' }}></span>
-                  <span style={{ height: '62%' }}></span>
-                  <span style={{ height: '46%' }}></span>
-                  <span style={{ height: '42%' }}></span>
-                  <span style={{ height: '37%' }}></span>
-                </div>
               </article>
 
               <article className="surface metric-card kpi-card savings-card">
@@ -614,14 +610,6 @@ function App() {
                 </div>
                 <p className="value">{formatCurrency(account.savings, account.currency)}</p>
                 <p className="meta">{account.savingsMeta}</p>
-                <div className="mini-spark" aria-hidden="true">
-                  <span style={{ height: '22%' }}></span>
-                  <span style={{ height: '30%' }}></span>
-                  <span style={{ height: '44%' }}></span>
-                  <span style={{ height: '55%' }}></span>
-                  <span style={{ height: '66%' }}></span>
-                  <span style={{ height: '74%' }}></span>
-                </div>
               </article>
             </div>
           </div>
@@ -778,7 +766,7 @@ function App() {
                 value={activeAccount}
                 onChange={(event) => setActiveAccount(event.target.value)}
               >
-                <option>Personal USD</option>
+                <option>Personal INR</option>
                 <option>Savings EUR</option>
                 <option>Travel GBP</option>
               </select>
@@ -861,6 +849,13 @@ function App() {
               <button type="button" className="ghost-btn">View all</button>
             </div>
             <div className="table-controls">
+              <input
+                className="table-search"
+                type="search"
+                placeholder="Search transactions"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
               <select value={transactionType} onChange={(event) => setTransactionType(event.target.value)}>
                 <option value="all">All types</option>
                 <option value="income">Income</option>
