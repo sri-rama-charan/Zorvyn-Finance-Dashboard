@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import { Modal } from '../../shared/Modal'
+import { useState } from 'react'
 import { PanelCard } from '../../shared/PanelCard'
-import { PanelSelect } from '../../shared/PanelControls'
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+import { AccountSwitcher } from './AccountSwitcher'
+import { CardCarousel } from './CardCarousel'
+import { CardEditorModal } from './CardEditorModal'
 
 export function AccountsPanel({
   role,
@@ -14,7 +15,6 @@ export function AccountsPanel({
   onAddCard,
   onRemoveCard,
 }) {
-  const cardScrollRef = useRef(null)
   const [editingIndex, setEditingIndex] = useState(null)
   const [cardDraft, setCardDraft] = useState({ name: '', amount: 0, state: 'Active' })
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -58,15 +58,6 @@ export function AccountsPanel({
     },
   ]
 
-  const cardNumbers = [account.cardNumber, '**** 4356', '**** 8012']
-
-  const scrollCards = (direction) => {
-    const el = cardScrollRef.current
-    if (!el) return
-    const amount = el.clientWidth * 0.8
-    el.scrollBy({ left: direction * amount, behavior: 'smooth' })
-  }
-
   const openEditModal = (index, card) => {
     setEditingIndex(index)
     setCardDraft({ name: card.name, amount: card.amount, state: card.state })
@@ -109,196 +100,38 @@ export function AccountsPanel({
     setIsModalOpen(false)
   }
 
-  const getCardNumber = (index) => {
-    if (cardNumbers[index]) return cardNumbers[index]
-    const lastFour = String(3728 + index * 418).slice(-4)
-    return `**** ${lastFour}`
-  }
-
   return (
     <PanelCard>
       <SectionPanelHeader title="Accounts & Cards" actionLabel="Manage" actionDisabled={role === 'Viewer'} />
 
-      <label className="mb-3 grid gap-1" htmlFor="account-switch">
-        <span className="text-[0.77rem] text-[#6b7cb1]">Active account</span>
-        <PanelSelect
-          id="account-switch"
-          className="rounded-[0.68rem] px-2"
-          value={activeAccount}
-          onChange={(event) => setActiveAccount(event.target.value)}
-          disabled={role === 'Viewer'}
-        >
-          <option>Personal INR</option>
-          <option>Savings EUR</option>
-          <option>Travel GBP</option>
-        </PanelSelect>
-      </label>
+      <AccountSwitcher
+        activeAccount={activeAccount}
+        onChange={(event) => setActiveAccount(event.target.value)}
+        disabled={role === 'Viewer'}
+      />
 
-      <div className="mb-2 flex items-center justify-between">
-        <p className="m-0 text-[0.78rem] font-semibold text-[#50639b]">My cards</p>
-        <div className="flex items-center gap-2">
-          {role === 'Admin' ? (
-            <button
-              type="button"
-              onClick={openAddModal}
-              className="rounded-full border border-[#dfe6fb] bg-white px-2.5 py-1 text-[0.7rem] font-bold text-[#4f67c8] shadow-sm"
-            >
-              Add card
-            </button>
-          ) : null}
-          <button
-            type="button"
-            onClick={() => scrollCards(-1)}
-            className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe6fb] bg-white text-[#5b6fa7] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(25,37,86,0.12)]"
-            aria-label="Scroll cards left"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollCards(1)}
-            className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe6fb] bg-white text-[#5b6fa7] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(25,37,86,0.12)]"
-            aria-label="Scroll cards right"
-          >
-            ›
-          </button>
-        </div>
-      </div>
+      <CardCarousel
+        role={role}
+        account={account}
+        formatCurrency={formatCurrency}
+        cardThemes={cardThemes}
+        fallbackThemes={fallbackThemes}
+        onAddCard={openAddModal}
+        onEditCard={openEditModal}
+      />
 
-      <div
-        ref={cardScrollRef}
-        className="flex gap-3 overflow-x-auto pb-2 pr-1"
-        aria-label="Connected cards"
-      >
-        {account.cards.map((card, index) => {
-          const theme =
-            cardThemes.find((item) => card.name.includes(item.nameMatch)) ||
-            fallbackThemes[index % fallbackThemes.length]
-          const number = getCardNumber(index)
-
-          return (
-            <article
-              className={`relative min-w-[220px] max-w-[240px] flex-1 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br ${theme.gradient} p-3 text-white shadow-[0_12px_24px_rgba(15,23,42,0.18)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_30px_rgba(15,23,42,0.22)]`}
-              key={card.name}
-              role="button"
-              tabIndex={0}
-            >
-              <span className="pointer-events-none absolute -right-8 -bottom-10 h-[120px] w-[120px] rounded-full bg-white/10"></span>
-              <div className="relative flex items-start justify-between">
-                <p className="m-0 text-[0.72rem] text-white/80">{card.name}</p>
-                <span className={`rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${card.state === 'Inactive' ? 'bg-white/15 text-white/70' : 'bg-white/25 text-white'}`}>
-                  {card.state}
-                </span>
-              </div>
-
-              <div className="relative mt-3 flex items-center justify-between">
-                <div className="h-7 w-10 rounded-md border border-white/40 bg-white/15"></div>
-                {theme.label === 'MASTERCARD' ? (
-                  <div className="flex items-center">
-                    <span className="h-4 w-4 rounded-full bg-[#ff5f5f]"></span>
-                    <span className="-ml-2 h-4 w-4 rounded-full bg-[#ffb36a]"></span>
-                  </div>
-                ) : (
-                  <span className="text-[0.72rem] font-bold tracking-[0.14em] text-white">{theme.label}</span>
-                )}
-              </div>
-
-              <div className="relative mt-3 grid gap-1">
-                <p className="m-0 text-[0.8rem] tracking-[0.16em] text-white/90">{number}</p>
-                <p className="m-0 text-[0.7rem] text-white/70">EXP 09/29 · CVV 611</p>
-              </div>
-
-              <div className="relative mt-2 text-[0.78rem] font-semibold" style={{ color: theme.accent }}>
-                {formatCurrency(card.amount, account.currency)}
-              </div>
-
-              {role === 'Admin' ? (
-                <div className="relative mt-2 flex items-center justify-between gap-2">
-                  <button
-                    type="button"
-                    onClick={() => openEditModal(index, card)}
-                    className="rounded-full bg-white/20 px-2 py-1 text-[0.65rem] font-semibold text-white"
-                  >
-                    Edit
-                  </button>
-                </div>
-              ) : null}
-            </article>
-          )
-        })}
-      </div>
-
-      <Modal
+      <CardEditorModal
         open={isModalOpen}
-        title={modalMode === 'add' ? 'Add card' : 'Edit card'}
+        modalMode={modalMode}
+        cardDraft={cardDraft}
+        setCardDraft={setCardDraft}
         onClose={() => {
           setEditingIndex(null)
           setIsModalOpen(false)
         }}
-        actions={
-          <>
-            {modalMode === 'edit' ? (
-              <button
-                type="button"
-                onClick={deleteCard}
-                className="rounded-full border border-[#f3d1d6] bg-[#fff1f3] px-3 py-1 text-[0.75rem] font-bold text-[#c03950]"
-              >
-                Delete
-              </button>
-            ) : null}
-            <button
-              type="button"
-              onClick={() => {
-                setEditingIndex(null)
-                setIsModalOpen(false)
-              }}
-              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.75rem] font-bold text-[#4f67c8]"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={saveModal}
-              className="rounded-full bg-[#4f67c8] px-3 py-1 text-[0.75rem] font-bold text-white"
-            >
-              Save
-            </button>
-          </>
-        }
-      >
-        <div className="grid gap-3">
-          <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-            Card name
-            <input
-              value={cardDraft.name}
-              onChange={(event) => setCardDraft((prev) => ({ ...prev, name: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85]"
-              placeholder="Card name"
-            />
-          </label>
-          <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-            Amount
-            <input
-              type="number"
-              min="0"
-              value={cardDraft.amount}
-              onChange={(event) => setCardDraft((prev) => ({ ...prev, amount: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85]"
-            />
-          </label>
-          <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-            State
-            <select
-              value={cardDraft.state}
-              onChange={(event) => setCardDraft((prev) => ({ ...prev, state: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85]"
-            >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </label>
-        </div>
-      </Modal>
+        onSave={saveModal}
+        onDelete={deleteCard}
+      />
     </PanelCard>
   )
 }
