@@ -11,7 +11,7 @@ export function PanelCard({
   return (
     <Card
       className={cn(
-        'rounded-2xl border border-[#e6ebf7] bg-white py-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(25,37,86,0.12)]',
+        'app-card rounded-2xl border py-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(25,37,86,0.12)]',
         interactive
           ? 'cursor-pointer hover:-translate-y-1 hover:shadow-[0_18px_34px_rgba(25,37,86,0.16)]'
           : '',

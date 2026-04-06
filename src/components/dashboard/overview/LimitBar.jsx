@@ -19,16 +19,16 @@ export function LimitBar({ label, limit, currency, formatCurrency }) {
   return (
     <div className="grid gap-2">
       <div className="flex items-center justify-between">
-        <p className="m-0 text-[0.86rem] font-semibold text-[#27357a]">{label}</p>
-        <p className="m-0 text-[0.84rem] font-bold text-[#4f5f97]">{percent}%</p>
+        <p className="m-0 text-[0.86rem] font-semibold text-[color:var(--app-text)] dark:text-white">{label}</p>
+        <p className="m-0 text-[0.84rem] font-bold text-[color:var(--app-text)] dark:text-white">{percent}%</p>
       </div>
-      <div className="h-2 rounded-full bg-[#ebeffa]" role="presentation">
+      <div className="h-2 rounded-full bg-[color:var(--app-border)]" role="presentation">
         <div
           className={`h-full rounded-full bg-gradient-to-r ${tone} transition-[width] duration-1000 ease-out`}
           style={{ width: isVisible ? `${percent}%` : '0%' }}
         ></div>
       </div>
-      <p className="m-0 text-[0.78rem] text-[#6676ad]">
+      <p className="m-0 text-[0.78rem] text-[color:var(--app-muted)] dark:text-white">
         {formatCurrency(limit.used, currency)} of {formatCurrency(limit.total, currency)} spent
       </p>
     </div>

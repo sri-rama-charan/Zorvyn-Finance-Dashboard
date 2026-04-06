@@ -13,6 +13,25 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: radial-gradient(circle at 8% 10%, #d6e0ff 0%, #edf2ff 42%, #e7ebf8 100%);
+  --app-bg: radial-gradient(circle at 8% 10%, #d6e0ff 0%, #edf2ff 42%, #e7ebf8 100%);
+  --app-surface: linear-gradient(180deg, rgba(248,250,255,0.96), rgba(242,246,255,0.93));
+  --app-card: #ffffff;
+  --app-card-2: #f6f8ff;
+  --app-border: #e6ebf7;
+  --app-text: #1f2651;
+  --app-muted: #6b7cb1;
+  --app-muted-2: #8a97c6;
+}
+
+.dark {
+  --app-bg: #0b0d12;
+  --app-surface: linear-gradient(180deg, #141821, #11141b);
+  --app-card: #151a24;
+  --app-card-2: #1b2230;
+  --app-border: #232a3b;
+  --app-text: #f5f7ff;
+  --app-muted: #a7b0c9;
+  --app-muted-2: #8c96b3;
 }
 
 * {
@@ -22,10 +41,39 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 #root {
   min-height: 100vh;
+}
+
+.app-shell {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+  box-shadow: 0 12px 32px rgba(25, 37, 86, 0.14);
+}
+
+.app-card {
+  background: var(--app-card);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.app-sidebar {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.app-muted {
+  color: var(--app-muted);
+}
+
+.app-muted-2 {
+  color: var(--app-muted-2);
 }
 
 @layer base {
@@ -104,7 +152,8 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    background: var(--app-bg);
+    color: var(--app-text);
   }
   html {
     @apply font-sans;

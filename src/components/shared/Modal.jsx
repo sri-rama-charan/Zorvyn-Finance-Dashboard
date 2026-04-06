@@ -14,13 +14,13 @@ export function Modal({ open, title, children, onClose, actions }) {
       aria-modal="true"
       onClick={handleBackdropClick}
     >
-      <div className="w-full max-w-md rounded-2xl border border-[#e3e9f7] bg-white p-4 shadow-[0_20px_50px_rgba(20,32,70,0.2)]">
+      <div className="w-full max-w-md rounded-2xl border border-[color:var(--app-border)] bg-[color:var(--app-card)] p-4 text-[color:var(--app-text)] shadow-[0_20px_50px_rgba(20,32,70,0.2)]">
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="m-0 text-[1rem] font-semibold text-[#1f2651]">{title}</h3>
+          <h3 className="m-0 text-[1rem] font-semibold text-[color:var(--app-text)]">{title}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe6fb] bg-white text-[#5b6fa7] shadow-[0_4px_10px_rgba(31,43,95,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9fb1e6]"
+            className="grid h-7 w-7 place-items-center rounded-full border border-[color:var(--app-border)] bg-[color:var(--app-card)] text-[color:var(--app-muted)] shadow-[0_4px_10px_rgba(31,43,95,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[color:var(--app-card-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9fb1e6]"
             aria-label="Close dialog"
           >
             x

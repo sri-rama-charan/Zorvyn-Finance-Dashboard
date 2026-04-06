@@ -29,6 +29,15 @@ export function AppStateProvider({ children }) {
       return 'Admin'
     }
   })
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'dark'
+    try {
+      const stored = window.localStorage.getItem('zorvyn-theme')
+      return stored || 'dark'
+    } catch {
+      return 'dark'
+    }
+  })
   const [activeAccount, setActiveAccount] = useState('Personal INR')
   const [search, setSearch] = useState('')
   const [transactionType, setTransactionType] = useState('all')
@@ -61,6 +70,20 @@ export function AppStateProvider({ children }) {
       // Ignore storage errors.
     }
   }, [role])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      window.localStorage.setItem('zorvyn-theme', theme)
+    } catch {
+      // Ignore storage errors.
+    }
+  }, [theme])
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+  }, [theme])
 
   const {
     filteredTransactions,
@@ -249,6 +272,8 @@ export function AppStateProvider({ children }) {
   const value = {
     role,
     setRole,
+    theme,
+    setTheme,
     activeAccount,
     setActiveAccount,
     search,

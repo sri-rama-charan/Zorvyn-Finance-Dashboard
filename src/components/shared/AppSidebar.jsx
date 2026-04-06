@@ -25,7 +25,7 @@ export function AppSidebar({
       ></div>
 
       <aside
-        className={`group fixed inset-y-0 left-0 z-50 flex flex-col items-stretch gap-4 border-r border-[#dbe5c9] bg-gradient-to-b from-[#eaf2d9] to-[#eff8e7] text-[#23473f] shadow-[inset_-1px_0_0_rgba(255,255,255,0.8)] transition-all duration-200 max-[720px]:w-[min(86vw,16rem)] max-[720px]:px-4 max-[720px]:py-4 ${
+        className={`app-sidebar group fixed inset-y-0 left-0 z-50 flex flex-col items-stretch gap-4 border-r shadow-[inset_-1px_0_0_rgba(255,255,255,0.08)] transition-all duration-200 max-[720px]:w-[min(86vw,16rem)] max-[720px]:px-4 max-[720px]:py-4 ${
           isCollapsed
             ? 'w-[4.6rem] px-2 py-3 hover:w-[14.5rem] hover:px-4 hover:py-4'
             : 'w-[14.5rem] px-4 py-4'
@@ -33,7 +33,7 @@ export function AppSidebar({
       >
         <button
           type="button"
-          className={`absolute top-[0.65rem] right-[0.65rem] grid h-[1.9rem] w-[1.9rem] place-items-center rounded-full border-0 bg-[rgba(24,56,47,0.08)] text-[#18382f] ${
+          className={`absolute top-[0.65rem] right-[0.65rem] grid h-[1.9rem] w-[1.9rem] place-items-center rounded-full border border-[color:var(--app-border)] bg-[color:var(--app-card-2)] text-[color:var(--app-text)] ${
             isCollapsed ? 'hidden group-hover:grid' : 'grid'
           }`}
           onClick={() => setSidebarOpen(false)}
@@ -42,9 +42,9 @@ export function AppSidebar({
           ✕
         </button>
 
-        <div className={`flex items-center gap-2 px-1 pt-1 pb-1.5 font-extrabold text-[#18382f] ${isCollapsed ? 'justify-center group-hover:justify-start' : ''}`}>
+        <div className={`flex items-center gap-2 px-1 pt-1 pb-1.5 font-extrabold text-[color:var(--app-text)] ${isCollapsed ? 'justify-center group-hover:justify-start' : ''}`}>
           <span
-            className="grid h-[1.7rem] w-[1.7rem] place-items-center rounded-[0.55rem] bg-[#173e36] text-[0.65rem] text-[#eaf7e1]"
+            className="grid h-[1.7rem] w-[1.7rem] place-items-center rounded-[0.55rem] bg-[color:var(--app-card-2)] text-[0.65rem] text-[color:var(--app-text)]"
             aria-hidden="true"
           >
             ●●
@@ -58,8 +58,8 @@ export function AppSidebar({
               key={item.key}
               className={`relative flex items-center gap-3 border-0 text-left transition-colors ${
                 activeItem === item.key
-                  ? 'bg-[#baf091] text-[#18382f] font-bold'
-                  : 'bg-transparent text-[#4d5f55] hover:bg-[#baf091] hover:text-[#18382f] hover:font-bold'
+                  ? 'bg-[color:var(--app-card-2)] text-[color:var(--app-text)] font-bold'
+                  : 'bg-transparent text-[color:var(--app-muted)] hover:bg-[color:var(--app-card-2)] hover:text-[color:var(--app-text)] hover:font-bold'
               } ${
                 isCollapsed
                   ? 'h-[2.8rem] w-[2.8rem] justify-center rounded-[0.9rem] p-0 group-hover:h-auto group-hover:w-auto group-hover:justify-start group-hover:rounded-full group-hover:px-3 group-hover:py-2.5'
@@ -75,20 +75,20 @@ export function AppSidebar({
         </nav>
 
         <article
-          className={`mt-auto rounded-2xl bg-[#204e45] p-4 text-[#eaf7e1] shadow-[0_14px_24px_rgba(24,56,47,0.18)] ${
+          className={`mt-auto rounded-2xl border border-[color:var(--app-border)] bg-[color:var(--app-card-2)] p-4 text-[color:var(--app-text)] shadow-[0_14px_24px_rgba(24,56,47,0.18)] ${
             isCollapsed ? 'hidden group-hover:grid group-hover:gap-4 max-[720px]:grid max-[720px]:gap-4' : 'grid gap-4'
           }`}
         >
           <div className="flex items-start gap-3">
-            <span className="grid h-[1.8rem] w-[1.8rem] place-items-center rounded-lg bg-[rgba(255,255,255,0.1)]">🔒</span>
+            <span className="grid h-[1.8rem] w-[1.8rem] place-items-center rounded-lg bg-[color:var(--app-card)]">🔒</span>
             <div>
               <p className="m-0 text-[0.82rem] font-bold">Gain full access</p>
-              <p className="mt-1 text-[0.74rem] leading-[1.45] text-[rgba(234,247,225,0.78)]">Unlock advanced analytics and graphs</p>
+              <p className="mt-1 text-[0.74rem] leading-[1.45] text-[color:var(--app-muted)]">Unlock advanced analytics and graphs</p>
             </div>
           </div>
           <button
             type="button"
-            className="min-h-[2.6rem] rounded-[0.8rem] border-0 bg-[#baf091] font-extrabold text-[#18382f]"
+            className="min-h-[2.6rem] rounded-[0.8rem] border border-[color:var(--app-border)] bg-[color:var(--app-card)] font-extrabold text-[color:var(--app-text)]"
           >
             Get Pro
           </button>

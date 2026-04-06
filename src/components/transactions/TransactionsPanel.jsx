@@ -152,7 +152,7 @@ export function TransactionsPanel({
           <button
             type="button"
             onClick={() => setFiltersOpen((prev) => !prev)}
-            className="hidden rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff] max-[720px]:inline-flex"
+            className="hidden rounded-full border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[color:var(--app-card-2)] max-[720px]:inline-flex"
             aria-expanded={filtersOpen}
             aria-controls={filtersId}
           >
@@ -162,7 +162,7 @@ export function TransactionsPanel({
             <button
               type="button"
               onClick={openAddModal}
-              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff]"
+              className="rounded-full border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[color:var(--app-card-2)]"
             >
               Add
             </button>
