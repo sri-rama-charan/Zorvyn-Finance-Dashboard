@@ -1,4 +1,6 @@
-function KpiCard({ icon, label, trendClassName, trendText, value, meta, cardClassName }) {
+import { AnimatedNumber } from '../../shared/AnimatedNumber'
+
+function KpiCard({ icon, label, trendClassName, trendText, value, formatValue, meta, cardClassName }) {
   const iconTone =
     cardClassName === 'income-card'
       ? 'bg-[#e8f9ee] text-[#2f9462]'
@@ -9,13 +11,15 @@ function KpiCard({ icon, label, trendClassName, trendText, value, meta, cardClas
   const trendTone = trendClassName === 'up' ? 'bg-[#e8f9ee] text-[#208b57]' : 'bg-[#fff1ec] text-[#cd6045]'
 
   return (
-    <article className="shadow-sm flex min-h-[138px] flex-col justify-center gap-1 rounded-2xl border border-[#dfe6fb] bg-gradient-to-b from-white to-[#f9fbff] p-4 max-[1040px]:min-h-[160px]">
+    <article className="shadow-sm flex min-h-[138px] flex-col justify-center gap-1 rounded-2xl border border-[#dfe6fb] bg-gradient-to-b from-white to-[#f9fbff] p-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_14px_28px_rgba(25,37,86,0.12)] max-[1040px]:min-h-[160px]">
       <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
         <span className={`grid h-6 w-6 place-items-center rounded-lg text-[0.78rem] font-bold ${iconTone}`} aria-hidden="true">{icon}</span>
         <p className="m-0 text-[0.93rem] font-semibold text-[#2b3f85]">{label}</p>
         <span className={`rounded-full px-2 py-1 text-[0.71rem] font-bold ${trendTone}`}>{trendText}</span>
       </div>
-      <p className="mt-1 mb-0 text-[1.95rem] leading-[1.05] font-bold text-[#1d2758] max-[1040px]:text-[1.55rem]">{value}</p>
+      <p className="mt-1 mb-0 text-[1.95rem] leading-[1.05] font-bold text-[#1d2758] max-[1040px]:text-[1.55rem]">
+         <AnimatedNumber value={value} formatValue={formatValue} />
+      </p>
       <p className="m-0 text-[0.79rem] text-[#7080b5]">{meta}</p>
     </article>
   )
@@ -29,7 +33,8 @@ export function OverviewKpis({ account, formatCurrency, formatSignedPercent }) {
         label="Income"
         trendClassName="up"
         trendText={formatSignedPercent(account.incomeDelta)}
-        value={formatCurrency(account.income, account.currency)}
+        value={account.income}
+        formatValue={(val) => formatCurrency(val, account.currency)}
         meta={account.incomeMeta}
         cardClassName="income-card"
       />
@@ -38,7 +43,8 @@ export function OverviewKpis({ account, formatCurrency, formatSignedPercent }) {
         label="Expenses"
         trendClassName="down"
         trendText={formatSignedPercent(account.expensesDelta)}
-        value={formatCurrency(account.expenses, account.currency)}
+        value={account.expenses}
+        formatValue={(val) => formatCurrency(val, account.currency)}
         meta={account.expensesMeta}
         cardClassName="expense-card"
       />
@@ -47,7 +53,8 @@ export function OverviewKpis({ account, formatCurrency, formatSignedPercent }) {
         label="Savings"
         trendClassName="up"
         trendText={formatSignedPercent(account.savingsDelta)}
-        value={formatCurrency(account.savings, account.currency)}
+        value={account.savings}
+        formatValue={(val) => formatCurrency(val, account.currency)}
         meta={account.savingsMeta}
         cardClassName="savings-card"
       />

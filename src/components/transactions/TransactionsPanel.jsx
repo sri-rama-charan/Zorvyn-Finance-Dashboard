@@ -39,7 +39,7 @@ export function TransactionsPanel({
         </PanelSelect>
       </div>
 
-      <div className="overflow-hidden rounded-[0.95rem] border border-[#e3e9f7]">
+      <div className="overflow-visible rounded-[0.95rem] border border-[#e3e9f7]">
         <div className="grid grid-cols-[1.1fr_1.5fr_0.9fr_0.75fr_0.9fr] items-center gap-2 bg-[#f5f8ff] px-4 py-3 text-[0.75rem] font-bold tracking-[0.04em] text-[#6a7caf] uppercase max-[720px]:grid-cols-[1fr_1.2fr_1fr]">
           <span>Date</span><span>Description</span><span>Category</span><span className="max-[720px]:hidden">Type</span><span className="max-[720px]:hidden">Amount</span>
         </div>

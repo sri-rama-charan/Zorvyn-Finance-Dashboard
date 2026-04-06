@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { PanelCard } from '../../shared/PanelCard'
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
 
@@ -36,6 +36,12 @@ function weeklySavingsSeries(account) {
 
 export function SavingsTrendChart({ account, formatCurrency }) {
   const [range, setRange] = useState('monthly')
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setIsVisible(true))
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   const monthlyData = useMemo(() => monthSavingsSeries(account), [account])
   const weeklyData = useMemo(() => weeklySavingsSeries(account), [account])
@@ -47,7 +53,7 @@ export function SavingsTrendChart({ account, formatCurrency }) {
     <PanelCard className="min-h-[360px]">
       <SectionPanelHeader title="Savings Trend" actionLabel={range === 'weekly' ? 'Every week' : 'Every month'} />
 
-      <div className="mb-3 inline-flex gap-1 rounded-full border border-[#d7deef] bg-[#f8faff] p-1" role="tablist" aria-label="Savings range">
+      <div className="mb-4 inline-flex gap-1 rounded-full border border-[#d7deef] bg-[#f8faff] p-1" role="tablist" aria-label="Savings range">
         <button
           type="button"
           className={
@@ -72,24 +78,55 @@ export function SavingsTrendChart({ account, formatCurrency }) {
         </button>
       </div>
 
-      <div className="grid min-h-[220px] grid-cols-[repeat(auto-fit,minmax(56px,1fr))] items-end gap-2 rounded-xl border border-[#e3e9f7] bg-gradient-to-b from-[#f8faff] to-[#eef3ff] p-3">
-        {series.map((item) => (
-          <div className="grid items-end justify-items-center gap-1" key={item.label}>
-            <div className="flex h-[150px] w-full items-end justify-center">
-              <div
-                className={`w-[72%] rounded-t-md ${item.value >= 0 ? 'bg-gradient-to-b from-[#95d69f] to-[#4da86b]' : 'bg-gradient-to-b from-[#ffb190] to-[#ff8d5e]'}`}
-                style={{ height: `${Math.max((Math.abs(item.value) / maxValue) * 100, 6)}%` }}
-                title={`${item.label}: ${formatCurrency(item.value, account.currency)}`}
-              ></div>
-            </div>
-            <p className="m-0 text-[0.7rem] text-[#6b7cb1]">{item.label}</p>
-          </div>
-        ))}
-      </div>
+      <div className="grid grid-cols-[35px_1fr] items-end gap-2 text-[#6b7cb1] text-[0.65rem] font-medium min-h-[220px] pb-5">
+        {/* Y Axis */}
+        <div className="flex h-[150px] flex-col justify-between text-right border-r border-[#e3e9f7] pr-2 mr-1">
+          <span>{formatCurrency(maxValue, account.currency).split('.')[0]}</span>
+          <span>{formatCurrency(maxValue / 2, account.currency).split('.')[0]}</span>
+          <span>0</span>
+        </div>
 
-      <p className="mt-2 mb-0 text-[0.78rem] text-[#6071a8]">
-        Net savings is calculated as income minus outflows for each selected period.
-      </p>
+        {/* Chart Area */}
+        <div className="grid h-[150px] grid-cols-[repeat(auto-fit,minmax(24px,1fr))] items-end gap-2 pr-2">
+           {series.map((item, index) => {
+            const pct = Math.max((Math.abs(item.value) / maxValue) * 100, 6)
+            const intensity = Math.min(1, Math.max(0.25, pct / 100))
+            const isPositive = item.value >= 0
+
+            const topLight = isPositive ? 74 - intensity * 26 : 78 - intensity * 30
+            const bottomLight = isPositive ? 50 - intensity * 18 : 52 - intensity * 22
+            const topColor = isPositive ? `hsl(140, 58%, ${topLight}%)` : `hsl(18, 85%, ${topLight}%)`
+            const bottomColor = isPositive ? `hsl(152, 52%, ${bottomLight}%)` : `hsl(6, 80%, ${bottomLight}%)`
+            const barShadow = isPositive
+              ? `0 6px 16px rgba(37,133,67,${0.1 + intensity * 0.25})`
+              : `0 6px 16px rgba(210,76,31,${0.1 + intensity * 0.25})`
+
+            return (
+              <div
+                className={`group relative flex h-full flex-col justify-end transition-all duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}
+                style={{ transitionDelay: `${index * 45}ms` }}
+                key={item.label}
+                title={`${item.label}: ${formatCurrency(item.value, account.currency)}`}
+              >
+                {/* Tooltip on hover */}
+                <div className="absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded bg-[#1b2247] px-2 py-1 text-[0.62rem] text-white group-hover:block z-10 whitespace-nowrap shadow-lg">
+                  {formatCurrency(item.value, account.currency)}
+                </div>
+
+                <div
+                  className="w-full rounded-t-[4px] transition-[height] duration-500"
+                  style={{ height: `${pct}%`, background: `linear-gradient(180deg, ${topColor}, ${bottomColor})`, boxShadow: barShadow }}
+                ></div>
+                
+                {/* X Axis Label */}
+                <span className="absolute top-full mt-2 w-full text-center text-[#8e9cce] truncate">
+                   {item.label.substring(0, 3)}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
     </PanelCard>
   )
 }
