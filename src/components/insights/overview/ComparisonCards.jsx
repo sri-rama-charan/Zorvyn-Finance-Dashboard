@@ -18,26 +18,26 @@ export function ComparisonCards({ formatCurrency, currency, insights }) {
     <section className="grid grid-cols-4 gap-3 max-[1040px]:grid-cols-2 max-[720px]:grid-cols-1" aria-label="Month-over-month highlights">
       <PanelCard className="min-h-[120px]" contentClassName="flex h-full flex-col justify-center">
         <p className="m-0 text-[0.78rem] text-[#6d7aab]">Spending vs last month</p>
-        <p className="mt-1 mb-1 text-[1.75rem] font-bold text-[#1d2758]">{formatCurrency(insights.currentExpense, currency)}</p>
-        <p className={`m-0 text-[0.75rem] ${compareTone(insights.expenseMoM, false)}`}>{insights.expenseMoM}% vs {insights.previousMonth}</p>
+        <p className="mt-1 mb-1 text-[1.75rem] font-bold tracking-tight text-[#1d2758]">{formatCurrency(insights.currentExpense, currency)}</p>
+        <p className={`m-0 text-[0.75rem] ${compareTone(insights.expenseMoM, false)}`}>{insights.expenseMoM}%</p>
       </PanelCard>
 
       <PanelCard className="min-h-[120px]" contentClassName="flex h-full flex-col justify-center">
         <p className="m-0 text-[0.78rem] text-[#6d7aab]">Income vs last month</p>
-        <p className="mt-1 mb-1 text-[1.75rem] font-bold text-[#1d2758]">{formatCurrency(insights.currentIncome, currency)}</p>
-        <p className={`m-0 text-[0.75rem] ${compareTone(insights.incomeMoM)}`}>{insights.incomeMoM}% vs {insights.previousMonth}</p>
+        <p className="mt-1 mb-1 text-[1.75rem] font-bold tracking-tight text-[#1d2758]">{formatCurrency(insights.currentIncome, currency)}</p>
+        <p className={`m-0 text-[0.75rem] ${compareTone(insights.incomeMoM)}`}>{insights.incomeMoM}%</p>
       </PanelCard>
 
       <PanelCard className="min-h-[120px]" contentClassName="flex h-full flex-col justify-center">
         <p className="m-0 text-[0.78rem] text-[#6d7aab]">Net cashflow</p>
-        <p className="mt-1 mb-1 text-[1.75rem] font-bold text-[#1d2758]">{formatCurrency(insights.currentNet, currency)}</p>
-        <p className={`m-0 text-[0.75rem] ${compareTone(insights.netMoM)}`}>{insights.netMoM}% vs {insights.previousMonth}</p>
+        <p className="mt-1 mb-1 text-[1.75rem] font-bold tracking-tight text-[#1d2758]">{formatCurrency(insights.currentNet, currency)}</p>
+        <p className={`m-0 text-[0.75rem] ${compareTone(insights.netMoM)}`}>{insights.netMoM}%</p>
       </PanelCard>
 
       <PanelCard className="min-h-[120px]" contentClassName="flex h-full flex-col justify-center">
         <p className="m-0 text-[0.78rem] text-[#6d7aab]">Savings rate trend</p>
-        <p className="mt-1 mb-1 text-[1.75rem] font-bold text-[#1d2758]">{insights.currentSavingsRate}%</p>
-        <p className={`m-0 text-[0.75rem] ${compareTone(insights.savingsRateMoM)}`}>{insights.savingsRateMoM}% vs {insights.previousMonth}</p>
+        <p className="mt-1 mb-1 text-[1.75rem] font-bold tracking-tight text-[#1d2758]">{insights.currentSavingsRate}%</p>
+        <p className={`m-0 text-[0.75rem] ${compareTone(insights.savingsRateMoM)}`}>{insights.savingsRateMoM}%</p>
       </PanelCard>
     </section>
   )

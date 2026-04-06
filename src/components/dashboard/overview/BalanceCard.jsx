@@ -2,8 +2,8 @@ export function BalanceCard({ account, formatCurrency, role, onEditSummary }) {
   if (role === 'Viewer') {
     return (
       <article className="flex min-h-[188px] flex-col justify-center gap-2 rounded-2xl border border-[#dfe6fb] bg-gradient-to-b from-white to-[#f9fbff] p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_14px_28px_rgba(25,37,86,0.12)]">
-        <p className="m-0 text-[0.78rem] text-[#6f7eb0]">Total Balance</p>
-        <p className="m-0 text-[1.75rem] font-bold text-[#1d2758]">
+        <p className="m-0 text-[0.78rem] text-[#6b7cb1]">Total Balance</p>
+        <p className="m-0 text-[1.75rem] font-bold tracking-tight text-[#1d2758]">
           {formatCurrency(account.balance, account.currency)}
         </p>
         <p className="m-0 text-[0.75rem] text-[#7080b5]">{account.balanceDelta}</p>
@@ -20,7 +20,7 @@ export function BalanceCard({ account, formatCurrency, role, onEditSummary }) {
       <div className="flex items-start justify-between">
         <div>
           <p className="m-0 text-[0.78rem] text-[#fff1e5]">Total Balance</p>
-          <p className="mt-1 mb-1 text-[1.75rem] font-bold text-white">{formatCurrency(account.balance, account.currency)}</p>
+          <p className="mt-1 mb-1 text-[1.75rem] font-bold tracking-tight text-white">{formatCurrency(account.balance, account.currency)}</p>
           <p className="m-0 text-[0.75rem] text-[#fff1e5]">{account.balanceDelta}</p>
         </div>
         <div className="flex flex-col items-end gap-2">
@@ -29,7 +29,7 @@ export function BalanceCard({ account, formatCurrency, role, onEditSummary }) {
             <button
               type="button"
               onClick={onEditSummary}
-              className="rounded-full bg-white/20 px-2 py-1 text-[0.68rem] font-semibold text-white"
+              className="rounded-full bg-white/20 px-2 py-1 text-[0.68rem] font-semibold text-white transition-all duration-200 hover:bg-white/30"
             >
               Edit
             </button>

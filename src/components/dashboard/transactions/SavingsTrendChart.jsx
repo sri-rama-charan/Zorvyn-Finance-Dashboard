@@ -55,10 +55,11 @@ export function SavingsTrendChart({ account, formatCurrency }) {
       <div className="mb-4 inline-flex gap-1 rounded-full border border-[#d7deef] bg-[#f8faff] p-1" role="tablist" aria-label="Savings range">
         <button
           type="button"
+          aria-pressed={range === 'monthly'}
           className={
             range === 'monthly'
-              ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 text-[0.78rem] font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)]'
-              : 'rounded-full bg-transparent px-3 py-2 text-[0.78rem] font-bold text-[#5c6fa7]'
+              ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 text-[0.78rem] font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)] transition-all duration-200'
+              : 'rounded-full bg-transparent px-3 py-2 text-[0.78rem] font-bold text-[#5c6fa7] transition-all duration-200 hover:bg-white'
           }
           onClick={() => setRange('monthly')}
         >
@@ -66,10 +67,11 @@ export function SavingsTrendChart({ account, formatCurrency }) {
         </button>
         <button
           type="button"
+          aria-pressed={range === 'weekly'}
           className={
             range === 'weekly'
-              ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 text-[0.78rem] font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)]'
-              : 'rounded-full bg-transparent px-3 py-2 text-[0.78rem] font-bold text-[#5c6fa7]'
+              ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 text-[0.78rem] font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)] transition-all duration-200'
+              : 'rounded-full bg-transparent px-3 py-2 text-[0.78rem] font-bold text-[#5c6fa7] transition-all duration-200 hover:bg-white'
           }
           onClick={() => setRange('weekly')}
         >

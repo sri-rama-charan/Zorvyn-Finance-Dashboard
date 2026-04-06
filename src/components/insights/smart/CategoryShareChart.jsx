@@ -10,7 +10,7 @@ export function CategoryShareChart({ categoryShareByMonth, categories }) {
         {categories.map((item) => (
           <span
             key={item.category}
-            className="inline-flex items-center gap-1 rounded-full border border-[#e4eaf8] bg-[#f6f8ff] px-2 py-1"
+            className="inline-flex items-center gap-1 rounded-full border border-[#e4eaf8] bg-[#f6f8ff] px-2 py-1 shadow-[0_4px_10px_rgba(31,43,95,0.08)]"
           >
             <i className="inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }}></i>
             {item.category} {item.percent}%

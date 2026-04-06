@@ -54,8 +54,14 @@ export function SpendingBreakdownCard({
       interactive
       role="button"
       tabIndex={0}
+      className="focus-visible:ring-2 focus-visible:ring-[#9fb1e6] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       onClick={onOpenInsightsRoute}
-      onKeyDown={(event) => event.key === 'Enter' && onOpenInsightsRoute()}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onOpenInsightsRoute()
+        }
+      }}
     >
       <SectionPanelHeader title="Spending Breakdown" actionLabel="Open insights" />
 

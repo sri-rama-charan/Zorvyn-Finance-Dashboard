@@ -20,7 +20,7 @@ export function Modal({ open, title, children, onClose, actions }) {
           <button
             type="button"
             onClick={onClose}
-            className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe6fb] bg-white text-[#5b6fa7]"
+            className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe6fb] bg-white text-[#5b6fa7] shadow-[0_4px_10px_rgba(31,43,95,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9fb1e6]"
             aria-label="Close dialog"
           >
             x

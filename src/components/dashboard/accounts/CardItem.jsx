@@ -1,7 +1,7 @@
 export function CardItem({ card, theme, number, currency, formatCurrency, role, onEdit }) {
   return (
     <article
-      className={`relative min-w-[220px] max-w-[240px] flex-1 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br ${theme.gradient} p-3 text-white shadow-[0_12px_24px_rgba(15,23,42,0.18)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_30px_rgba(15,23,42,0.22)]`}
+      className={`relative min-w-[220px] max-w-[240px] flex-1 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br ${theme.gradient} p-3 text-white shadow-[0_12px_24px_rgba(15,23,42,0.18)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_30px_rgba(15,23,42,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60`}
       key={card.name}
       role="button"
       tabIndex={0}
