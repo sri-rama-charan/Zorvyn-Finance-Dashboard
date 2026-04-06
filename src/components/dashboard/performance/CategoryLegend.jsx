@@ -13,8 +13,8 @@ export function CategoryLegend({ categoriesList, isVisible, formatCurrency, acco
             className="h-3 w-3 rounded-full shadow-sm"
             style={{ backgroundColor: cat.color }}
           ></i>
-          <span className="text-[0.8rem] font-medium text-[#1b2247]">{cat.category}</span>
-          <span className="text-[0.75rem] text-[#646f96]">
+          <span className="text-[0.8rem] font-medium text-[color:var(--app-muted)]">{cat.category}</span>
+          <span className="text-[0.75rem] text-[color:var(--app-muted)] dark:text-white">
             {formatCurrency((cat.percent / 100) * account.expenses, account.currency)}
           </span>
         </div>

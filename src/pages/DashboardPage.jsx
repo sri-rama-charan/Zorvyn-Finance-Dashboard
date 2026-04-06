@@ -14,6 +14,8 @@ export function DashboardPage() {
     setSidebarOpen,
     role,
     setRole,
+    theme,
+    setTheme,
     activeAccount,
     setActiveAccount,
     account,
@@ -56,8 +58,14 @@ export function DashboardPage() {
         onGoInsights={handleGoInsights}
       />
 
-      <main className="ml-[4.6rem] grid gap-4 rounded-[1.25rem] border border-[rgba(180,192,224,0.4)] bg-gradient-to-b from-[rgba(248,250,255,0.96)] to-[rgba(242,246,255,0.93)] p-5 shadow-[0_12px_32px_rgba(25,37,86,0.14)] max-[1024px]:gap-3 max-[720px]:ml-0 max-[720px]:gap-3 max-[720px]:p-3 max-[480px]:gap-2 max-[480px]:p-2">
-        <DashboardHeaderBar role={role} setRole={setRole} onOpenSidebar={() => setSidebarOpen(true)} />
+      <main className="app-shell ml-[4.6rem] grid gap-4 rounded-[1.25rem] border p-5 max-[1024px]:gap-3 max-[720px]:ml-0 max-[720px]:gap-3 max-[720px]:p-3 max-[480px]:gap-2 max-[480px]:p-2">
+        <DashboardHeaderBar
+          role={role}
+          setRole={setRole}
+          theme={theme}
+          setTheme={setTheme}
+          onOpenSidebar={() => setSidebarOpen(true)}
+        />
 
         <DashboardOverview
           account={account}

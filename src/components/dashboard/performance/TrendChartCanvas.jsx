@@ -58,13 +58,13 @@ export function TrendChartCanvas({ account, formatCurrency }) {
   }, [account.monthlySeries])
 
   return (
-    <section className="rounded-[1.1rem] border border-[#e5ebfa] bg-white p-3 shadow-sm">
+    <section className="rounded-[1.1rem] border border-[color:var(--app-border)] bg-[color:var(--app-card-2)] p-3 shadow-sm">
       <div className="mb-2 flex items-center justify-between gap-2">
         <div>
-          <p className="m-0 text-[0.94rem] font-bold text-[#1b2247]">Income vs expenses over time</p>
-          <p className="mt-0.5 text-[0.74rem] text-[#646f96]">Smooth trend with animated reveal</p>
+          <p className="m-0 text-[0.94rem] font-bold text-[color:var(--app-text)]">Income vs expenses over time</p>
+          <p className="mt-0.5 text-[0.74rem] text-[color:var(--app-muted)]">Smooth trend with animated reveal</p>
         </div>
-        <div className="flex gap-3 text-[0.78rem] text-[#646f96]" aria-hidden="true">
+        <div className="flex gap-3 text-[0.78rem] text-[color:var(--app-muted)]" aria-hidden="true">
           <span className="inline-flex items-center gap-1.5"><i className="inline-block h-2.5 w-2.5 rounded-full bg-[#5fd59a]"></i>Income</span>
           <span className="inline-flex items-center gap-1.5"><i className="inline-block h-2.5 w-2.5 rounded-full bg-[#ff7d8a]"></i>Expense</span>
         </div>
@@ -90,10 +90,10 @@ export function TrendChartCanvas({ account, formatCurrency }) {
 
           {yAxisLabels.map((label, idx) => (
             <g key={idx} className={isAnimated ? 'opacity-100 transition-opacity duration-500' : 'opacity-0'}>
-              <text x="35" y={label.y + 4} fill="#8290b3" fontSize="10" textAnchor="end" fontWeight="500">
+              <text x="35" y={label.y + 4} fill="var(--app-muted-2)" fontSize="10" textAnchor="end" fontWeight="500">
                 {label.val >= 1000 ? `${(label.val / 1000).toFixed(0)}k` : label.val.toFixed(0)}
               </text>
-              <line x1="45" y1={label.y} x2="620" y2={label.y} stroke="#f0f4fd" strokeWidth="1" strokeDasharray={idx === 0 ? '' : '4 5'} />
+              <line x1="45" y1={label.y} x2="620" y2={label.y} stroke="var(--app-border)" strokeWidth="1" strokeDasharray={idx === 0 ? '' : '4 5'} />
             </g>
           ))}
 
@@ -126,7 +126,7 @@ export function TrendChartCanvas({ account, formatCurrency }) {
                 y1={22}
                 x2={points[hoveredIndex]}
                 y2={216}
-                stroke="#cbd5e1"
+                stroke="var(--app-border)"
                 strokeWidth="1.5"
                 strokeDasharray="3 4"
               />
@@ -152,23 +152,23 @@ export function TrendChartCanvas({ account, formatCurrency }) {
 
         {hoveredIndex !== null && (
           <div
-            className="pointer-events-none absolute z-20 flex flex-col gap-1.5 rounded-xl border border-[#e1e8f7] bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(24,49,95,0.12)] transition-all"
+            className="pointer-events-none absolute z-20 flex flex-col gap-1.5 rounded-xl border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-2.5 shadow-[0_8px_24px_rgba(24,49,95,0.12)] transition-all"
             style={{
               left: `calc(${(points[hoveredIndex] / 640) * 100}% + 12px)`,
               top: '40%',
               transform: points[hoveredIndex] > 480 ? 'translateX(-100%) translateX(-24px)' : 'none',
             }}
           >
-            <p className="m-0 text-[0.7rem] font-bold uppercase tracking-wider text-[#646f96]">
+            <p className="m-0 text-[0.7rem] font-bold uppercase tracking-wider text-[color:var(--app-muted)]">
               {yValues[hoveredIndex].month} 26
             </p>
             <div className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1 text-[0.8rem]">
               <span className="font-medium text-[#5fd59a]">Income</span>
-              <span className="text-right font-semibold text-[#1b2247]">
+              <span className="text-right font-semibold text-[color:var(--app-text)]">
                 {formatCurrency(yValues[hoveredIndex].income, account.currency)}
               </span>
               <span className="font-medium text-[#ff7d8a]">Expense</span>
-              <span className="text-right font-semibold text-[#1b2247]">
+              <span className="text-right font-semibold text-[color:var(--app-text)]">
                 {formatCurrency(yValues[hoveredIndex].expenses, account.currency)}
               </span>
             </div>
@@ -176,9 +176,9 @@ export function TrendChartCanvas({ account, formatCurrency }) {
         )}
       </div>
 
-      <div className="ml-[45px] mt-2 flex justify-between text-center text-[0.7rem] text-[#646f96]" aria-hidden="true">
+      <div className="ml-[45px] mt-2 flex justify-between text-center text-[0.7rem] text-[color:var(--app-muted)]" aria-hidden="true">
         {account.monthlySeries.map((item, i) => (
-          <span key={item.month} className={`flex-1 ${hoveredIndex === i ? 'font-bold text-[#1b2247]' : ''}`}>
+          <span key={item.month} className={`flex-1 ${hoveredIndex === i ? 'font-bold text-[color:var(--app-text)]' : ''}`}>
             {item.month}
           </span>
         ))}

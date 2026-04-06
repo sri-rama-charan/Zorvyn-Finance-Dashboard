@@ -19,7 +19,7 @@ export function TransactionsAdvancedFilters({
           setDateFrom(event.target.value)
           setTransactionPage(1)
         }}
-        className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
+        className="rounded-xl border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-2 text-[0.78rem] text-[color:var(--app-text)] placeholder:text-[color:var(--app-muted-2)] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
         placeholder="From"
       />
       <input
@@ -29,7 +29,7 @@ export function TransactionsAdvancedFilters({
           setDateTo(event.target.value)
           setTransactionPage(1)
         }}
-        className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
+        className="rounded-xl border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-2 text-[0.78rem] text-[color:var(--app-text)] placeholder:text-[color:var(--app-muted-2)] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
         placeholder="To"
       />
       <input
@@ -40,7 +40,7 @@ export function TransactionsAdvancedFilters({
           setAmountMin(event.target.value)
           setTransactionPage(1)
         }}
-        className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
+        className="rounded-xl border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-2 text-[0.78rem] text-[color:var(--app-text)] placeholder:text-[color:var(--app-muted-2)] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
         placeholder="Min amount"
       />
       <input
@@ -51,7 +51,7 @@ export function TransactionsAdvancedFilters({
           setAmountMax(event.target.value)
           setTransactionPage(1)
         }}
-        className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
+        className="rounded-xl border border-[color:var(--app-border)] bg-[color:var(--app-card)] px-3 py-2 text-[0.78rem] text-[color:var(--app-text)] placeholder:text-[color:var(--app-muted-2)] shadow-[0_2px_6px_rgba(34,55,111,0.05)] transition-colors duration-200 hover:border-[#c8d3ef] focus:border-[#9fb1e6] focus:outline-none"
         placeholder="Max amount"
       />
     </div>

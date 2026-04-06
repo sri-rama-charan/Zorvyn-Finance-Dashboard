@@ -9,8 +9,8 @@ export function TransactionsTable({
   gridClassName,
 }) {
   return (
-    <div className="overflow-visible rounded-[0.95rem] border border-[#e3e9f7]">
-      <div className={`grid items-center gap-2 rounded-t-[0.9rem] border-b border-[#e6ecfb] bg-[#f7f9ff] px-4 py-3 text-[0.74rem] font-bold tracking-[0.06em] text-[#6a7caf] uppercase max-[720px]:grid-cols-[1fr_1.2fr_1fr] ${gridClassName}`}>
+    <div className="overflow-visible rounded-[0.95rem] border border-[color:var(--app-border)]">
+      <div className={`grid items-center gap-2 rounded-t-[0.9rem] border-b border-[color:var(--app-border)] bg-[color:var(--app-card-2)] px-4 py-3 text-[0.74rem] font-bold tracking-[0.06em] text-[color:var(--app-muted)] uppercase max-[720px]:grid-cols-[1fr_1.2fr_1fr] ${gridClassName}`}>
         <span>Date</span><span>Description</span><span>Category</span><span className="max-[720px]:hidden">Type</span><span className="max-[720px]:hidden">Amount</span>{showActions ? <span className="text-right max-[720px]:hidden">Actions</span> : null}
       </div>
 
@@ -27,7 +27,7 @@ export function TransactionsTable({
           />
         ))
       ) : (
-        <div className="p-4 text-center text-[0.88rem] text-[#678]">No transactions match the current filters.</div>
+        <div className="p-4 text-center text-[0.88rem] text-[color:var(--app-muted)]">No transactions match the current filters.</div>
       )}
     </div>
   )
