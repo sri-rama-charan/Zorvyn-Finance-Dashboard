@@ -1,15 +1,14 @@
-import { ExpenseIncomeTrendChart } from './monthlyComparison/ExpenseIncomeTrendChart'
-import { MonthOverMonthSummary } from './monthlyComparison/MonthOverMonthSummary'
+import { CategoryShareChart } from './smart/CategoryShareChart'
+import { SpendingHighlightsPanel } from './smart/SpendingHighlightsPanel'
 
 export function InsightsMonthlyComparison({ formatCurrency, account, insights }) {
   return (
-    <section className="grid gap-3 [grid-template-columns:1.15fr_0.85fr] max-[1040px]:grid-cols-2 max-[720px]:grid-cols-1">
-      <ExpenseIncomeTrendChart
-        formatCurrency={formatCurrency}
-        currency={account.currency}
-        monthlySeries={insights.monthlySeries}
+    <section className="grid gap-3 [grid-template-columns:1.2fr_0.8fr] max-[1040px]:grid-cols-1">
+      <CategoryShareChart
+        categoryShareByMonth={insights.categoryShareByMonth}
+        categories={insights.categoryPercents}
       />
-      <MonthOverMonthSummary formatCurrency={formatCurrency} currency={account.currency} insights={insights} />
+      <SpendingHighlightsPanel formatCurrency={formatCurrency} currency={account.currency} insights={insights} />
     </section>
   )
 }

@@ -37,6 +37,7 @@ export function TransactionsPanel({
   const pageSize = 10
   const [modalMode, setModalMode] = useState(null)
   const [editingTransaction, setEditingTransaction] = useState(null)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [draft, setDraft] = useState({
     date: new Date().toISOString().slice(0, 10),
     description: '',
@@ -142,19 +143,29 @@ export function TransactionsPanel({
   }
   return (
     <PanelCard>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <SectionPanelHeader title="Recent Transactions" actionLabel="View all" />
-        {showActions ? (
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={openAddModal}
-            className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm"
+            onClick={() => setFiltersOpen((prev) => !prev)}
+            className="hidden rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm max-[720px]:inline-flex"
+            aria-expanded={filtersOpen}
           >
-            Add
+            Filters
           </button>
-        ) : null}
+          {showActions ? (
+            <button
+              type="button"
+              onClick={openAddModal}
+              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm"
+            >
+              Add
+            </button>
+          ) : null}
+        </div>
       </div>
-      <div className="mb-2 flex flex-wrap gap-2">
+      <div className={`mb-2 flex flex-wrap gap-2 ${filtersOpen ? 'max-[720px]:flex' : 'max-[720px]:hidden'}`}>
         <PanelInput
           type="search"
           placeholder="Search transactions"
@@ -203,7 +214,7 @@ export function TransactionsPanel({
         </PanelSelect>
       </div>
 
-      <div className="mb-3 grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 max-[1040px]:grid-cols-2 max-[720px]:grid-cols-1">
+      <div className={`mb-3 grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 max-[1040px]:grid-cols-2 max-[720px]:grid-cols-1 ${filtersOpen ? 'max-[720px]:grid' : 'max-[720px]:hidden'}`}>
         <input
           type="date"
           value={dateFrom}

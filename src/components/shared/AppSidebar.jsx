@@ -25,11 +25,11 @@ export function AppSidebar({
       ></div>
 
       <aside
-        className={`group fixed inset-y-0 left-0 z-50 flex flex-col items-stretch gap-4 border-r border-[#dbe5c9] bg-gradient-to-b from-[#eaf2d9] to-[#eff8e7] text-[#23473f] shadow-[inset_-1px_0_0_rgba(255,255,255,0.8)] transition-all duration-200 max-[720px]:w-[min(86vw,16rem)] ${
+        className={`group fixed inset-y-0 left-0 z-50 flex flex-col items-stretch gap-4 border-r border-[#dbe5c9] bg-gradient-to-b from-[#eaf2d9] to-[#eff8e7] text-[#23473f] shadow-[inset_-1px_0_0_rgba(255,255,255,0.8)] transition-all duration-200 max-[720px]:w-[min(86vw,16rem)] max-[720px]:px-4 max-[720px]:py-4 ${
           isCollapsed
             ? 'w-[4.6rem] px-2 py-3 hover:w-[14.5rem] hover:px-4 hover:py-4'
             : 'w-[14.5rem] px-4 py-4'
-        }`}
+        } ${sidebarOpen ? 'max-[720px]:translate-x-0' : 'max-[720px]:-translate-x-full'}`}
       >
         <button
           type="button"
