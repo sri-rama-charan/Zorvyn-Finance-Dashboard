@@ -11,10 +11,10 @@ export function PanelCard({
   return (
     <Card
       className={cn(
-        'rounded-2xl border border-[#e6ebf7] bg-white py-0 shadow-sm transition-all duration-200',
+        'rounded-2xl border border-[#e6ebf7] bg-white py-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(25,37,86,0.12)]',
         interactive
-          ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(25,37,86,0.12)]'
-          : 'hover:shadow-[0_10px_22px_rgba(25,37,86,0.08)]',
+          ? 'cursor-pointer hover:-translate-y-1 hover:shadow-[0_18px_34px_rgba(25,37,86,0.16)]'
+          : '',
         className,
       )}
       {...props}
