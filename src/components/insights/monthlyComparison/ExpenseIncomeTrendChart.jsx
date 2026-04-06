@@ -1,10 +1,11 @@
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+import { PanelCard } from '../../shared/PanelCard'
 
 export function ExpenseIncomeTrendChart({ formatCurrency, currency, monthlySeries }) {
   const maxValue = Math.max(...monthlySeries.map((item) => Math.max(item.income, item.expenses)), 1)
 
   return (
-    <article className="min-h-[330px] rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm">
+    <PanelCard className="min-h-[330px]">
       <SectionPanelHeader title="Monthly Comparison" actionLabel="Income vs Expenses" />
 
       <div className="mb-2 inline-flex gap-3 text-[0.8rem] text-[#4f5f97]" aria-hidden="true">
@@ -26,6 +27,6 @@ export function ExpenseIncomeTrendChart({ formatCurrency, currency, monthlySerie
           </div>
         ))}
       </div>
-    </article>
+    </PanelCard>
   )
 }

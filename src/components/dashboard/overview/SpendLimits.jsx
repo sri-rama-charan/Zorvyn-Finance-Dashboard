@@ -1,3 +1,6 @@
+import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+import { PanelCard } from '../../shared/PanelCard'
+
 function limitPercent(limit) {
   return Math.round((limit.used / limit.total) * 100)
 }
@@ -24,11 +27,8 @@ function LimitBar({ label, colorClassName, limit, currency, formatCurrency }) {
 
 export function SpendLimits({ account, formatCurrency }) {
   return (
-    <article className="grid h-full content-start gap-4 rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm" aria-label="Spending limits">
-      <div className="mb-1 flex items-center justify-between gap-2">
-        <h2 className="m-0 text-base text-[#1f2651]">Spend Limits</h2>
-        <button type="button" className="min-h-[2.4rem] rounded-xl border border-[#e3e8f7] bg-[#f4f6fc] px-3 text-[#4f5f97]">This month</button>
-      </div>
+    <PanelCard className="h-full" contentClassName="grid h-full content-start gap-4" aria-label="Spending limits">
+      <SectionPanelHeader title="Spend Limits" actionLabel="This month" />
 
       <div className="grid grid-cols-1 gap-3 max-[720px]:grid-cols-1">
         <LimitBar
@@ -46,6 +46,6 @@ export function SpendLimits({ account, formatCurrency }) {
           formatCurrency={formatCurrency}
         />
       </div>
-    </article>
+    </PanelCard>
   )
 }

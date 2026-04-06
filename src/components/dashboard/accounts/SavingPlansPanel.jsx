@@ -1,16 +1,10 @@
+import { PanelCard } from '../../shared/PanelCard'
+import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+
 export function SavingPlansPanel({ role, account, formatCurrency }) {
   return (
-    <article className="rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <h2 className="m-0 text-base text-[#1f2651]">Saving Plans</h2>
-        <button
-          type="button"
-          className="min-h-[2.4rem] rounded-xl border border-[#e3e8f7] bg-[#f4f6fc] px-3 text-[#4f5f97] disabled:cursor-not-allowed disabled:opacity-45"
-          disabled={role === 'Viewer'}
-        >
-          + Add plan
-        </button>
-      </div>
+    <PanelCard>
+      <SectionPanelHeader title="Saving Plans" actionLabel="+ Add plan" actionDisabled={role === 'Viewer'} />
 
       <p className="mb-3 text-[0.81rem] text-[#5f72aa]">
         Total savings target: {formatCurrency(account.plans.reduce((sum, item) => sum + item.target, 0), account.currency)}
@@ -33,6 +27,6 @@ export function SavingPlansPanel({ role, account, formatCurrency }) {
           </div>
         )
       })}
-    </article>
+    </PanelCard>
   )
 }

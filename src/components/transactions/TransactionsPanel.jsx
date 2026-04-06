@@ -1,5 +1,7 @@
-import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+import { SectionPanelHeader } from '../shared/SectionPanelHeader'
 import { TransactionRow } from './TransactionRow'
+import { PanelCard } from '../shared/PanelCard'
+import { PanelInput, PanelSelect } from '../shared/PanelControls'
 
 export function TransactionsPanel({
   search,
@@ -13,29 +15,28 @@ export function TransactionsPanel({
   currency,
 }) {
   return (
-    <article className="rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm">
+    <PanelCard>
       <SectionPanelHeader title="Recent Transactions" actionLabel="View all" />
       <div className="mb-3 flex gap-2">
-        <input
-          className="min-h-[2.2rem] rounded-[0.7rem] border border-[#d7deef] bg-white px-2.5 text-[#2b3f85]"
+        <PanelInput
           type="search"
           placeholder="Search transactions"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
-        <select className="min-h-[2.2rem] rounded-[0.7rem] border border-[#d7deef] bg-white px-2.5 text-[#2b3f85]" value={transactionType} onChange={(event) => setTransactionType(event.target.value)}>
+        <PanelSelect value={transactionType} onChange={(event) => setTransactionType(event.target.value)}>
           <option value="all">All types</option>
           <option value="income">Income</option>
           <option value="expense">Expense</option>
           <option value="transfer">Transfer</option>
-        </select>
+        </PanelSelect>
 
-        <select className="min-h-[2.2rem] rounded-[0.7rem] border border-[#d7deef] bg-white px-2.5 text-[#2b3f85]" value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+        <PanelSelect value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
           <option value="date-desc">Newest first</option>
           <option value="date-asc">Oldest first</option>
           <option value="amount-desc">Largest amount</option>
           <option value="amount-asc">Smallest amount</option>
-        </select>
+        </PanelSelect>
       </div>
 
       <div className="overflow-hidden rounded-[0.95rem] border border-[#e3e9f7]">
@@ -56,6 +57,6 @@ export function TransactionsPanel({
           <div className="p-4 text-center text-[0.88rem] text-[#678]">No transactions match the current filters.</div>
         )}
       </div>
-    </article>
+    </PanelCard>
   )
 }

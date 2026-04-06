@@ -1,5 +1,6 @@
 import { IncomeVsExpensesChart } from './performance/IncomeVsExpensesChart'
 import { SpendingBreakdownCard } from './performance/SpendingBreakdownCard'
+import { TwoPanelSection } from '../shared/TwoPanelSection'
 
 export function DashboardPerformance({
   onOpenInsightsRoute,
@@ -14,7 +15,7 @@ export function DashboardPerformance({
   topCategories,
 }) {
   return (
-    <section className="grid gap-3 [grid-template-columns:1.35fr_1fr] max-[1040px]:grid-cols-1">
+    <TwoPanelSection>
       <IncomeVsExpensesChart
         account={account}
         formatCurrency={formatCurrency}
@@ -31,6 +32,6 @@ export function DashboardPerformance({
         breakdownGradient={breakdownGradient}
         topCategories={topCategories}
       />
-    </section>
+    </TwoPanelSection>
   )
 }

@@ -1,3 +1,5 @@
+import { PanelSelect } from '../shared/PanelControls'
+
 export function DashboardHeaderBar({ role, setRole, onOpenSidebar }) {
   return (
     <header className="grid items-center gap-4 border-b border-slate-200/70 px-1 pt-1 pb-3 md:grid-cols-[auto_minmax(0,1fr)]">
@@ -26,15 +28,15 @@ export function DashboardHeaderBar({ role, setRole, onOpenSidebar }) {
         </div>
 
         <label className="grid gap-1 text-[0.68rem] text-[#5f6ea3] sm:justify-self-start lg:justify-self-end" htmlFor="role-switch">
-          <select
+          <PanelSelect
             id="role-switch"
-            className="min-h-[2.2rem] rounded-xl border border-[#d7deef] bg-white px-2 text-[#24306f]"
+            className="rounded-xl px-2 text-[#24306f]"
             value={role}
             onChange={(event) => setRole(event.target.value)}
           >
             <option>Viewer</option>
             <option>Admin</option>
-          </select>
+          </PanelSelect>
         </label>
 
         <div className="inline-flex items-center gap-2 justify-self-end text-[0.86rem] font-bold text-[#20356b] sm:justify-self-start">

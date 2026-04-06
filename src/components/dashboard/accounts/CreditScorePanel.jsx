@@ -1,10 +1,10 @@
+import { PanelCard } from '../../shared/PanelCard'
+import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+
 export function CreditScorePanel({ account }) {
   return (
-    <article className="rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <h2 className="m-0 text-base text-[#1f2651]">Card Credit Score</h2>
-        <button type="button" className="min-h-[2.4rem] rounded-xl border border-[#e3e8f7] bg-[#f4f6fc] px-3 text-[#4f5f97]">Current card</button>
-      </div>
+    <PanelCard>
+      <SectionPanelHeader title="Card Credit Score" actionLabel="Current card" />
 
       <div
         className="mx-auto mt-1 mb-3 grid h-[146px] w-[146px] place-items-center rounded-full bg-[conic-gradient(#44b06e_0deg_260deg,#ecf1fb_260deg_360deg)]"
@@ -22,6 +22,6 @@ export function CreditScorePanel({ account }) {
         <li>Utilization ratio: 31%</li>
         <li>Recommendation: keep below 30%</li>
       </ul>
-    </article>
+    </PanelCard>
   )
 }
