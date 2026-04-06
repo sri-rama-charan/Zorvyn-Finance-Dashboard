@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+PROJECT_STRUCTURE.md
+REFACTORING_SUMMARY.md
+submission_checklist.md
+ARCHITECTURE.md
