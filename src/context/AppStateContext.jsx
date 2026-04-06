@@ -32,7 +32,13 @@ export function AppStateProvider({ children }) {
   const [activeAccount, setActiveAccount] = useState('Personal INR')
   const [search, setSearch] = useState('')
   const [transactionType, setTransactionType] = useState('all')
+  const [transactionStatus, setTransactionStatus] = useState('all')
   const [sortBy, setSortBy] = useState('date-desc')
+  const [amountMin, setAmountMin] = useState('')
+  const [amountMax, setAmountMax] = useState('')
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
+  const [transactionPage, setTransactionPage] = useState(1)
   const [insightRange, setInsightRange] = useState('monthly')
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -58,6 +64,8 @@ export function AppStateProvider({ children }) {
 
   const {
     filteredTransactions,
+    transactionPageCount,
+    transactionTotalCount,
     topCategories,
     breakdownGradient,
     incomePoints,
@@ -66,7 +74,20 @@ export function AppStateProvider({ children }) {
     monthlyIncomeTotal,
     savingsRate,
     recentActivity,
-  } = useDashboardData({ account, search, transactionType, sortBy, insightRange })
+  } = useDashboardData({
+    account,
+    search,
+    transactionType,
+    transactionStatus,
+    sortBy,
+    amountMin,
+    amountMax,
+    dateFrom,
+    dateTo,
+    transactionPage,
+    pageSize: 10,
+    insightRange,
+  })
 
   const recalcAccountTotals = (current) => {
     const incomeTotal = current.transactions
@@ -234,8 +255,20 @@ export function AppStateProvider({ children }) {
     setSearch,
     transactionType,
     setTransactionType,
+    transactionStatus,
+    setTransactionStatus,
     sortBy,
     setSortBy,
+    amountMin,
+    setAmountMin,
+    amountMax,
+    setAmountMax,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
+    transactionPage,
+    setTransactionPage,
     insightRange,
     setInsightRange,
     sidebarOpen,
@@ -243,6 +276,8 @@ export function AppStateProvider({ children }) {
     account,
     accounts,
     filteredTransactions,
+    transactionPageCount,
+    transactionTotalCount,
     topCategories,
     breakdownGradient,
     incomePoints,

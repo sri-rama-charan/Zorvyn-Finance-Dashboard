@@ -23,6 +23,20 @@ export function TransactionsPage() {
     addTransaction,
     updateTransaction,
     removeTransaction,
+    transactionStatus,
+    setTransactionStatus,
+    amountMin,
+    setAmountMin,
+    amountMax,
+    setAmountMax,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
+    transactionPage,
+    setTransactionPage,
+    transactionPageCount,
+    transactionTotalCount,
   } = useAppState()
 
   return (
@@ -54,6 +68,20 @@ export function TransactionsPage() {
             onAddTransaction={addTransaction}
             onUpdateTransaction={updateTransaction}
             onRemoveTransaction={removeTransaction}
+            transactionStatus={transactionStatus}
+            setTransactionStatus={setTransactionStatus}
+            amountMin={amountMin}
+            setAmountMin={setAmountMin}
+            amountMax={amountMax}
+            setAmountMax={setAmountMax}
+            dateFrom={dateFrom}
+            setDateFrom={setDateFrom}
+            dateTo={dateTo}
+            setDateTo={setDateTo}
+            transactionPage={transactionPage}
+            setTransactionPage={setTransactionPage}
+            transactionPageCount={transactionPageCount}
+            transactionTotalCount={transactionTotalCount}
           />
         </section>
       </main>
