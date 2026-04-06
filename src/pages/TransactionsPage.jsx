@@ -20,6 +20,9 @@ export function TransactionsPage() {
     filteredTransactions,
     formatCurrency,
     account,
+    addTransaction,
+    updateTransaction,
+    removeTransaction,
   } = useAppState()
 
   return (
@@ -47,6 +50,10 @@ export function TransactionsPage() {
             filteredTransactions={filteredTransactions}
             formatCurrency={formatCurrency}
             currency={account.currency}
+            role={role}
+            onAddTransaction={addTransaction}
+            onUpdateTransaction={updateTransaction}
+            onRemoveTransaction={removeTransaction}
           />
         </section>
       </main>

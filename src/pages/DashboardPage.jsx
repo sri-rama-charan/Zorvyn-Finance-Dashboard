@@ -17,6 +17,10 @@ export function DashboardPage() {
     activeAccount,
     setActiveAccount,
     account,
+    updateLimit,
+    updateCard,
+    addCard,
+    removeCard,
     formatCurrency,
     formatSignedPercent,
     monthlyIncomeTotal,
@@ -27,6 +31,8 @@ export function DashboardPage() {
     breakdownGradient,
     topCategories,
     recentActivity,
+     updateAccountFields,
+     updateMonthlySeries,
   } = useAppState()
 
   return (
@@ -47,6 +53,9 @@ export function DashboardPage() {
           account={account}
           formatCurrency={formatCurrency}
           formatSignedPercent={formatSignedPercent}
+          role={role}
+          onUpdateLimit={updateLimit}
+           onUpdateAccount={updateAccountFields}
         />
 
         <DashboardPerformance
@@ -60,12 +69,17 @@ export function DashboardPage() {
           expensePoints={expensePoints}
           breakdownGradient={breakdownGradient}
           topCategories={topCategories}
+           role={role}
+           onUpdateMonthlySeries={updateMonthlySeries}
         />
 
         <DashboardAccounts
           role={role}
           activeAccount={activeAccount}
           setActiveAccount={setActiveAccount}
+          onUpdateCard={updateCard}
+          onAddCard={addCard}
+          onRemoveCard={removeCard}
           account={account}
           formatCurrency={formatCurrency}
         />

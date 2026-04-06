@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { SectionPanelHeader } from '../shared/SectionPanelHeader'
 import { TransactionRow } from './TransactionRow'
 import { PanelCard } from '../shared/PanelCard'
 import { PanelInput, PanelSelect } from '../shared/PanelControls'
+import { Modal } from '../shared/Modal'
 
 export function TransactionsPanel({
   search,
@@ -13,10 +15,108 @@ export function TransactionsPanel({
   filteredTransactions,
   formatCurrency,
   currency,
+  role,
+  onAddTransaction,
+  onUpdateTransaction,
+  onRemoveTransaction,
 }) {
+  const [modalMode, setModalMode] = useState(null)
+  const [editingTransaction, setEditingTransaction] = useState(null)
+  const [draft, setDraft] = useState({
+    date: new Date().toISOString().slice(0, 10),
+    description: '',
+    category: '',
+    type: 'expense',
+    amount: '',
+    status: 'Completed',
+  })
+
+  const showActions = role === 'Admin'
+  const gridClassName = showActions
+    ? 'grid-cols-[1.1fr_1.5fr_0.9fr_0.75fr_0.9fr_0.6fr]'
+    : 'grid-cols-[1.1fr_1.5fr_0.9fr_0.75fr_0.9fr]'
+
+  const openAddModal = () => {
+    setModalMode('add')
+    setEditingTransaction(null)
+    setDraft({
+      date: new Date().toISOString().slice(0, 10),
+      description: '',
+      category: '',
+      type: 'expense',
+      amount: '',
+      status: 'Completed',
+    })
+  }
+
+  const openEditModal = (transaction) => {
+    setModalMode('edit')
+    setEditingTransaction(transaction)
+    setDraft({
+      date: transaction.date,
+      description: transaction.description,
+      category: transaction.category,
+      type: transaction.type,
+      amount: Math.abs(transaction.amount),
+      status: transaction.status,
+    })
+  }
+
+  const closeModal = () => {
+    setModalMode(null)
+    setEditingTransaction(null)
+  }
+
+  const saveModal = () => {
+    if (!draft.description.trim()) return
+    const rawAmount = Number(draft.amount || 0)
+    const signedAmount = draft.type === 'income' ? Math.abs(rawAmount) : -Math.abs(rawAmount)
+
+    if (modalMode === 'add') {
+      onAddTransaction({
+        id: Date.now(),
+        date: draft.date,
+        description: draft.description.trim(),
+        category: draft.category.trim() || 'General',
+        amount: signedAmount,
+        type: draft.type,
+        status: draft.status,
+      })
+    }
+
+    if (modalMode === 'edit' && editingTransaction) {
+      onUpdateTransaction(editingTransaction.id, {
+        date: draft.date,
+        description: draft.description.trim(),
+        category: draft.category.trim() || 'General',
+        type: draft.type,
+        status: draft.status,
+        amount: signedAmount,
+      })
+    }
+
+    closeModal()
+  }
+
+  const deleteTransaction = () => {
+    if (!editingTransaction || !onRemoveTransaction) return
+    onRemoveTransaction(editingTransaction.id)
+    closeModal()
+  }
   return (
     <PanelCard>
-      <SectionPanelHeader title="Recent Transactions" actionLabel="View all" />
+      <div className="flex items-center justify-between">
+        <SectionPanelHeader title="Recent Transactions" actionLabel="View all" />
+        {showActions ? (
+          <button
+            type="button"
+            onClick={openAddModal}
+            className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm"
+          >
+            Add
+          </button>
+        ) : null}
+      </div>
       <div className="mb-3 flex gap-2">
         <PanelInput
           type="search"
@@ -40,8 +140,8 @@ export function TransactionsPanel({
       </div>
 
       <div className="overflow-visible rounded-[0.95rem] border border-[#e3e9f7]">
-        <div className="grid grid-cols-[1.1fr_1.5fr_0.9fr_0.75fr_0.9fr] items-center gap-2 bg-[#f5f8ff] px-4 py-3 text-[0.75rem] font-bold tracking-[0.04em] text-[#6a7caf] uppercase max-[720px]:grid-cols-[1fr_1.2fr_1fr]">
-          <span>Date</span><span>Description</span><span>Category</span><span className="max-[720px]:hidden">Type</span><span className="max-[720px]:hidden">Amount</span>
+        <div className={`grid items-center gap-2 bg-[#f5f8ff] px-4 py-3 text-[0.75rem] font-bold tracking-[0.04em] text-[#6a7caf] uppercase max-[720px]:grid-cols-[1fr_1.2fr_1fr] ${gridClassName}`}>
+          <span>Date</span><span>Description</span><span>Category</span><span className="max-[720px]:hidden">Type</span><span className="max-[720px]:hidden">Amount</span>{showActions ? <span className="text-right max-[720px]:hidden">Actions</span> : null}
         </div>
 
         {filteredTransactions.length > 0 ? (
@@ -51,12 +151,95 @@ export function TransactionsPanel({
               transaction={transaction}
               formatCurrency={formatCurrency}
               currency={currency}
+              showActions={showActions}
+              onEdit={() => openEditModal(transaction)}
+              gridClassName={gridClassName}
             />
           ))
         ) : (
           <div className="p-4 text-center text-[0.88rem] text-[#678]">No transactions match the current filters.</div>
         )}
       </div>
+
+      <Modal
+        open={modalMode !== null}
+        title={modalMode === 'edit' ? 'Edit transaction' : 'Add transaction'}
+        onClose={closeModal}
+        actions={
+          <>
+            {modalMode === 'edit' ? (
+              <button
+                type="button"
+                onClick={deleteTransaction}
+                className="rounded-full border border-[#f3d1d6] bg-[#fff1f3] px-3 py-1 text-[0.75rem] font-bold text-[#c03950]"
+              >
+                Delete
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={closeModal}
+              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.75rem] font-bold text-[#4f67c8]"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={saveModal}
+              className="rounded-full bg-[#4f67c8] px-3 py-1 text-[0.75rem] font-bold text-white"
+            >
+              Save
+            </button>
+          </>
+        }
+      >
+        <div className="grid gap-3">
+          <div className="grid grid-cols-2 gap-2 max-[720px]:grid-cols-1">
+            <input
+              type="date"
+              value={draft.date}
+              onChange={(event) => setDraft((prev) => ({ ...prev, date: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            />
+            <input
+              placeholder="Description"
+              value={draft.description}
+              onChange={(event) => setDraft((prev) => ({ ...prev, description: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            />
+            <input
+              placeholder="Category"
+              value={draft.category}
+              onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            />
+            <input
+              type="number"
+              placeholder="Amount"
+              value={draft.amount}
+              onChange={(event) => setDraft((prev) => ({ ...prev, amount: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            />
+            <select
+              value={draft.type}
+              onChange={(event) => setDraft((prev) => ({ ...prev, type: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            >
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+              <option value="transfer">Transfer</option>
+            </select>
+            <select
+              value={draft.status}
+              onChange={(event) => setDraft((prev) => ({ ...prev, status: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            >
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+        </div>
+      </Modal>
     </PanelCard>
   )
 }

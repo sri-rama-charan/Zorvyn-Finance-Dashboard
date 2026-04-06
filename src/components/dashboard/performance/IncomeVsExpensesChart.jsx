@@ -3,6 +3,7 @@ import { line, area, curveNatural } from 'd3-shape'
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
 import { PanelCard } from '../../shared/PanelCard'
 import { MetricTile } from '../../shared/MetricTile'
+import { Modal } from '../../shared/Modal'
 
 export function IncomeVsExpensesChart({
   account,
@@ -10,14 +11,34 @@ export function IncomeVsExpensesChart({
   monthlyIncomeTotal,
   monthlyExpenseTotal,
   savingsRate,
+  role,
+  onUpdateMonthlySeries,
 }) {
   const [isAnimated, setIsAnimated] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState(null)
+  const [isSeriesOpen, setIsSeriesOpen] = useState(false)
+  const [seriesDraft, setSeriesDraft] = useState(account.monthlySeries)
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => setIsAnimated(true))
     return () => cancelAnimationFrame(frame)
   }, [])
+
+  const openSeriesModal = () => {
+    setSeriesDraft(account.monthlySeries.map((item) => ({ ...item })))
+    setIsSeriesOpen(true)
+  }
+
+  const saveSeries = () => {
+    if (!onUpdateMonthlySeries) return
+    const nextSeries = seriesDraft.map((item) => ({
+      month: item.month,
+      income: Number(item.income || 0),
+      expenses: Number(item.expenses || 0),
+    }))
+    onUpdateMonthlySeries(nextSeries)
+    setIsSeriesOpen(false)
+  }
 
   const { incomePath, expensePath, incomeAreaPath, expenseAreaPath, points, yValues, yAxisLabels } = useMemo(() => {
     const width = 640
@@ -69,7 +90,11 @@ export function IncomeVsExpensesChart({
 
   return (
     <PanelCard>
-      <SectionPanelHeader title="Balance Trend" actionLabel="Animated" />
+      <SectionPanelHeader
+        title="Balance Trend"
+        actionLabel={role === 'Admin' ? 'Edit series' : 'Animated'}
+        onAction={role === 'Admin' ? openSeriesModal : undefined}
+      />
 
       <div className="mb-3 grid grid-cols-2 gap-2 max-[720px]:grid-cols-1">
         <MetricTile
@@ -207,6 +232,66 @@ export function IncomeVsExpensesChart({
           ))}
         </div>
       </section>
+
+      <Modal
+        open={isSeriesOpen}
+        title="Edit monthly series"
+        onClose={() => setIsSeriesOpen(false)}
+        actions={
+          <>
+            <button
+              type="button"
+              onClick={() => setIsSeriesOpen(false)}
+              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.75rem] font-bold text-[#4f67c8]"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={saveSeries}
+              className="rounded-full bg-[#4f67c8] px-3 py-1 text-[0.75rem] font-bold text-white"
+            >
+              Save
+            </button>
+          </>
+        }
+      >
+        <div className="grid gap-2">
+          {seriesDraft.map((item, index) => (
+            <div key={item.month} className="grid grid-cols-[auto_1fr_1fr] items-center gap-2">
+              <span className="text-[0.75rem] font-semibold text-[#5b6fa7]">{item.month}</span>
+              <input
+                type="number"
+                min="0"
+                value={item.income}
+                onChange={(event) =>
+                  setSeriesDraft((prev) =>
+                    prev.map((entry, i) =>
+                      i === index ? { ...entry, income: event.target.value } : entry,
+                    ),
+                  )
+                }
+                className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem]"
+                placeholder="Income"
+              />
+              <input
+                type="number"
+                min="0"
+                value={item.expenses}
+                onChange={(event) =>
+                  setSeriesDraft((prev) =>
+                    prev.map((entry, i) =>
+                      i === index ? { ...entry, expenses: event.target.value } : entry,
+                    ),
+                  )
+                }
+                className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem]"
+                placeholder="Expenses"
+              />
+            </div>
+          ))}
+        </div>
+      </Modal>
     </PanelCard>
   )
 }

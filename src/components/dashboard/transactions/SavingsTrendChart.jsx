@@ -20,18 +20,17 @@ function weekKey(dateValue) {
 }
 
 function weeklySavingsSeries(account) {
-  const grouped = new Map()
+  const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const totals = Object.fromEntries(weekdays.map((day) => [day, 0]))
 
   account.transactions.forEach((transaction) => {
-    const key = weekKey(transaction.date)
-    const current = grouped.get(key) ?? 0
-    grouped.set(key, current + transaction.amount)
+    const date = new Date(transaction.date)
+    const dayIndex = (date.getDay() + 6) % 7
+    const day = weekdays[dayIndex]
+    totals[day] += transaction.amount
   })
 
-  return Array.from(grouped.entries())
-    .sort((first, second) => first[0].localeCompare(second[0]))
-    .slice(-8)
-    .map(([label, value]) => ({ label, value }))
+  return weekdays.map((day) => ({ label: day, value: totals[day] }))
 }
 
 export function SavingsTrendChart({ account, formatCurrency }) {
@@ -119,9 +118,9 @@ export function SavingsTrendChart({ account, formatCurrency }) {
                 ></div>
                 
                 {/* X Axis Label */}
-                <span className="absolute top-full mt-2 w-full text-center text-[#8e9cce] truncate">
-                   {item.label.substring(0, 3)}
-                </span>
+                 <span className="absolute top-full mt-2 w-full text-center text-[#8e9cce] truncate">
+                   {range === 'weekly' ? item.label : item.label.substring(0, 3)}
+                 </span>
               </div>
             )
           })}
