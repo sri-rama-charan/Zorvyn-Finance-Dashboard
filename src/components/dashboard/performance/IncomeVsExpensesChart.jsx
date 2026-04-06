@@ -1,4 +1,6 @@
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
+import { PanelCard } from '../../shared/PanelCard'
+import { MetricTile } from '../../shared/MetricTile'
 
 export function IncomeVsExpensesChart({
   account,
@@ -10,20 +12,15 @@ export function IncomeVsExpensesChart({
   expensePoints,
 }) {
   return (
-    <article className="rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm">
+    <PanelCard>
       <SectionPanelHeader title="Income vs Expenses" actionLabel="Monthly" />
 
       <div className="mb-3 grid grid-cols-2 gap-2">
-        <div className="rounded-[0.85rem] border border-[#e4ebfa] bg-gradient-to-b from-[#f8faff] to-[#f3f7ff] p-3">
-          <p className="m-0 text-[0.76rem] text-[#6f7eb0]">Net trend</p>
-          <p className="mt-1 text-[1.2rem] font-extrabold text-[#223671]">
-            {formatCurrency(monthlyIncomeTotal - monthlyExpenseTotal, account.currency)}
-          </p>
-        </div>
-        <div className="rounded-[0.85rem] border border-[#e4ebfa] bg-gradient-to-b from-[#f8faff] to-[#f3f7ff] p-3">
-          <p className="m-0 text-[0.76rem] text-[#6f7eb0]">Savings rate</p>
-          <p className="mt-1 text-[1.2rem] font-extrabold text-[#223671]">{savingsRate}%</p>
-        </div>
+        <MetricTile
+          label="Net trend"
+          value={formatCurrency(monthlyIncomeTotal - monthlyExpenseTotal, account.currency)}
+        />
+        <MetricTile label="Savings rate" value={`${savingsRate}%`} />
       </div>
 
       <div className="mb-2 flex gap-4 text-[0.82rem] text-[#4f5f97]" aria-hidden="true">
@@ -42,6 +39,6 @@ export function IncomeVsExpensesChart({
       <div className="mt-2 grid grid-cols-9 text-[0.72rem] text-[#7181b6] max-[720px]:grid-cols-5 max-[720px]:gap-y-1" aria-hidden="true">
         <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span>
       </div>
-    </article>
+    </PanelCard>
   )
 }

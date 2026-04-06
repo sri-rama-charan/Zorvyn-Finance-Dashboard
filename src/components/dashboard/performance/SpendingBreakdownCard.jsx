@@ -1,5 +1,6 @@
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
 import { SpendingCategoryBreakdownList } from '../../shared/SpendingCategoryBreakdownList'
+import { PanelCard } from '../../shared/PanelCard'
 
 export function SpendingBreakdownCard({
   onOpenInsightsRoute,
@@ -9,8 +10,8 @@ export function SpendingBreakdownCard({
   topCategories,
 }) {
   return (
-    <article
-      className="cursor-pointer rounded-2xl border border-[#e6ebf7] bg-white p-4 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(25,37,86,0.12)]"
+    <PanelCard
+      interactive
       role="button"
       tabIndex={0}
       onClick={onOpenInsightsRoute}
@@ -32,6 +33,6 @@ export function SpendingBreakdownCard({
           currency={account.currency}
         />
       </div>
-    </article>
+    </PanelCard>
   )
 }

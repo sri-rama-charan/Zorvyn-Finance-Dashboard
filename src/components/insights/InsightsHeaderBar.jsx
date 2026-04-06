@@ -1,3 +1,19 @@
+function InsightRangeButton({ selected, label, onClick }) {
+  return (
+    <button
+      type="button"
+      className={
+        selected
+          ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)]'
+          : 'rounded-full bg-transparent px-3 py-2 font-bold text-[#5c6fa7]'
+      }
+      onClick={onClick}
+    >
+      {label}
+    </button>
+  )
+}
+
 export function InsightsHeaderBar({ onBackToDashboardRoute, insightRange, setInsightRange }) {
   return (
     <header className="grid items-center gap-4 border-b border-slate-200/70 px-1 pt-1 pb-3 md:grid-cols-[auto_minmax(0,1fr)]">
@@ -19,28 +35,8 @@ export function InsightsHeaderBar({ onBackToDashboardRoute, insightRange, setIns
           role="tablist"
           aria-label="Insight range"
         >
-          <button
-            type="button"
-            className={
-              insightRange === 'weekly'
-                ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)]'
-                : 'rounded-full bg-transparent px-3 py-2 font-bold text-[#5c6fa7]'
-            }
-            onClick={() => setInsightRange('weekly')}
-          >
-            Weekly
-          </button>
-          <button
-            type="button"
-            className={
-              insightRange === 'monthly'
-                ? 'rounded-full bg-gradient-to-b from-white to-[#eef3ff] px-3 py-2 font-bold text-[#21408f] shadow-[0_4px_14px_rgba(51,70,157,0.08)]'
-                : 'rounded-full bg-transparent px-3 py-2 font-bold text-[#5c6fa7]'
-            }
-            onClick={() => setInsightRange('monthly')}
-          >
-            Monthly
-          </button>
+          <InsightRangeButton selected={insightRange === 'weekly'} label="Weekly" onClick={() => setInsightRange('weekly')} />
+          <InsightRangeButton selected={insightRange === 'monthly'} label="Monthly" onClick={() => setInsightRange('monthly')} />
         </div>
       </div>
     </header>
