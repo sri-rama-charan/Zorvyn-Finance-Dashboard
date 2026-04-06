@@ -1,16 +1,60 @@
-# React + Vite
+# Zorvyn Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Zorvyn is a finance dashboard UI built with React and Vite. It includes a responsive layout, rich data visuals, and a light/dark theme driven by CSS variables.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Dashboard overview with KPIs, balances, spend limits, and charts
+- Transactions table with filters, pagination, and edit actions
+- Insights views with comparisons, heatmaps, and observations
+- Admin/Viewer roles with modal-based edits
+- Theme toggle (light/dark) persisted in localStorage
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + React Router
+- Vite
+- Tailwind CSS
+- d3-shape for custom chart paths
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+Open the dev server URL printed in the terminal.
+
+## Scripts
+
+```bash
+npm run dev      # Start dev server
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+## Project Structure
+
+```
+src/
+	components/        # UI components (dashboard, insights, transactions)
+	context/           # App state context (theme, role, data)
+	data/              # Sample data
+	hooks/             # Data/logic helpers
+	pages/             # Route pages
+	utils/             # Formatting utilities
+	index.css          # Global styles + theme variables
+```
+
+## Theming
+
+- Theme is stored in localStorage under `zorvyn-theme`.
+- The root `dark` class is applied on initial load to avoid flash.
+- UI colors are driven by `--app-*` CSS variables in [src/index.css](src/index.css).
+
+## Notes
+
+- This is a UI-focused project with local sample data (no backend).
+- Routes include `/`, `/transactions`, and `/insights`.
