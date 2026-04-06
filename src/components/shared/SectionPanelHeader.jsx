@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 
 export function SectionPanelHeader({ title, actionLabel, onAction, actionDisabled = false }) {
   return (
-    <div className="mb-3 flex items-center justify-between gap-2">
+    <div className="mb-3 flex items-center justify-between gap-2 max-[720px]:mb-2">
       <h2 className="m-0 text-base text-[#1f2651]">{title}</h2>
       <Button
         variant="outline"

@@ -19,7 +19,7 @@ export function PanelCard({
       )}
       {...props}
     >
-      <CardContent className={cn('p-4', contentClassName)}>{children}</CardContent>
+      <CardContent className={cn('p-4 max-[720px]:p-3 max-[480px]:p-2', contentClassName)}>{children}</CardContent>
     </Card>
   )
 }

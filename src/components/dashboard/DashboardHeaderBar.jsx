@@ -2,7 +2,7 @@ import { PanelSelect } from '../shared/PanelControls'
 
 export function DashboardHeaderBar({ role, setRole, onOpenSidebar }) {
   return (
-    <header className="grid items-center gap-4 border-b border-slate-200/70 px-1 pt-1 pb-3 md:grid-cols-[auto_minmax(0,1fr)]">
+    <header className="grid items-center gap-4 border-b border-slate-200/70 px-1 pt-1 pb-3 md:grid-cols-[auto_minmax(0,1fr)] max-[720px]:gap-3 max-[720px]:justify-items-start">
       <div className="flex items-center gap-2">
         <button
           type="button"
@@ -15,7 +15,7 @@ export function DashboardHeaderBar({ role, setRole, onOpenSidebar }) {
         <h1 className="mt-0.5 text-2xl leading-tight text-slate-900">Welcome back</h1>
       </div>
 
-      <div className="grid w-auto max-w-none items-center gap-2 justify-self-end sm:grid-cols-[auto_auto] md:grid-cols-[auto_auto_auto] md:justify-self-stretch lg:justify-self-end">
+      <div className="grid w-auto max-w-none items-center gap-2 justify-self-end sm:grid-cols-[auto_auto] md:grid-cols-[auto_auto_auto] md:justify-self-stretch lg:justify-self-end max-[720px]:w-full max-[720px]:grid-cols-[auto_auto_auto] max-[720px]:justify-between max-[720px]:justify-self-start">
         <div className="inline-flex items-center gap-2 sm:justify-self-start" aria-label="Top bar actions">
           <button
             type="button"

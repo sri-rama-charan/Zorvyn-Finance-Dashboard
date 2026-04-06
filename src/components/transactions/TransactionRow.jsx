@@ -19,7 +19,18 @@ export function TransactionRow({
       key={transaction.id}
     >
       <span>{transaction.date}</span>
-      <span>{transaction.description}</span>
+      <span className="flex items-center justify-between gap-2">
+        <span className="truncate">{transaction.description}</span>
+        {showActions ? (
+          <button
+            type="button"
+            onClick={onEdit}
+            className="hidden rounded-full bg-[#eef2ff] px-2 py-1 text-[0.7rem] font-bold text-[#4f67c8] max-[720px]:inline-flex"
+          >
+            Edit
+          </button>
+        ) : null}
+      </span>
       <span>{transaction.category}</span>
       <span className={`inline-flex w-fit items-center justify-center rounded-full px-2 py-1 text-[0.72rem] font-bold capitalize max-[720px]:hidden ${pillTone}`}>
         {transaction.type}
@@ -28,7 +39,7 @@ export function TransactionRow({
         {formatCurrency(transaction.amount, currency)}
       </span>
       {showActions ? (
-        <div className="flex justify-end">
+        <div className="flex justify-end max-[720px]:hidden">
           <button
             type="button"
             onClick={onEdit}
