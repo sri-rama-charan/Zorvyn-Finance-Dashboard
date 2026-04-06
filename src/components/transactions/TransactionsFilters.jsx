@@ -1,6 +1,7 @@
 import { PanelInput, PanelSelect } from '../shared/PanelControls'
 
 export function TransactionsFilters({
+  id,
   search,
   setSearch,
   transactionType,
@@ -13,7 +14,7 @@ export function TransactionsFilters({
   className,
 }) {
   return (
-    <div className={`mb-2 flex flex-wrap gap-2 ${className || ''}`}>
+    <div id={id} className={`mb-2 flex flex-wrap gap-2 ${className || ''}`}>
       <PanelInput
         type="search"
         placeholder="Search transactions"

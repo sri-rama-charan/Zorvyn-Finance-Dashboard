@@ -40,6 +40,7 @@ export function TransactionsPanel({
   const [modalMode, setModalMode] = useState(null)
   const [editingTransaction, setEditingTransaction] = useState(null)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const filtersId = 'transaction-filters'
   const [draft, setDraft] = useState({
     date: new Date().toISOString().slice(0, 10),
     description: '',
@@ -151,8 +152,9 @@ export function TransactionsPanel({
           <button
             type="button"
             onClick={() => setFiltersOpen((prev) => !prev)}
-            className="hidden rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm max-[720px]:inline-flex"
+            className="hidden rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff] max-[720px]:inline-flex"
             aria-expanded={filtersOpen}
+            aria-controls={filtersId}
           >
             Filters
           </button>
@@ -160,7 +162,7 @@ export function TransactionsPanel({
             <button
               type="button"
               onClick={openAddModal}
-              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm"
+              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.74rem] font-bold text-[#4f67c8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff]"
             >
               Add
             </button>
@@ -168,6 +170,7 @@ export function TransactionsPanel({
         </div>
       </div>
       <TransactionsFilters
+        id={filtersId}
         search={search}
         setSearch={setSearch}
         transactionType={transactionType}

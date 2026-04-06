@@ -9,7 +9,7 @@ export function MetricTile({ label, value, note, valueClassName, className }) {
       )}
     >
       <p className="m-0 text-[0.76rem] text-[#6f7eb0]">{label}</p>
-      <p className={cn('mt-1 text-[1.2rem] font-extrabold text-[#223671]', valueClassName)}>{value}</p>
+      <p className={cn('mt-1 text-[1.2rem] font-extrabold tracking-tight text-[#223671]', valueClassName)}>{value}</p>
       {note ? <p className="mt-1 text-[0.76rem] text-[#6071a8]">{note}</p> : null}
     </div>
   )

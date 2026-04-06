@@ -48,31 +48,31 @@ export function TransactionEditorModal({
             type="date"
             value={draft.date}
             onChange={(event) => setDraft((prev) => ({ ...prev, date: event.target.value }))}
-            className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-[0_2px_6px_rgba(34,55,111,0.05)]"
           />
           <input
             placeholder="Description"
             value={draft.description}
             onChange={(event) => setDraft((prev) => ({ ...prev, description: event.target.value }))}
-            className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)]"
           />
           <input
             placeholder="Category"
             value={draft.category}
             onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value }))}
-            className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)]"
           />
           <input
             type="number"
             placeholder="Amount"
             value={draft.amount}
             onChange={(event) => setDraft((prev) => ({ ...prev, amount: event.target.value }))}
-            className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] placeholder:text-[#8a97c6] shadow-[0_2px_6px_rgba(34,55,111,0.05)]"
           />
           <select
             value={draft.type}
             onChange={(event) => setDraft((prev) => ({ ...prev, type: event.target.value }))}
-            className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-[0_2px_6px_rgba(34,55,111,0.05)]"
           >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
@@ -81,7 +81,7 @@ export function TransactionEditorModal({
           <select
             value={draft.status}
             onChange={(event) => setDraft((prev) => ({ ...prev, status: event.target.value }))}
-            className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
+            className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-[0_2px_6px_rgba(34,55,111,0.05)]"
           >
             <option value="Completed">Completed</option>
             <option value="Pending">Pending</option>

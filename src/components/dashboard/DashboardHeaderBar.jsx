@@ -6,20 +6,22 @@ export function DashboardHeaderBar({ role, setRole, onOpenSidebar }) {
       <div className="flex items-center gap-2">
         <button
           type="button"
-          className="grid h-9 w-9 place-items-center rounded-full border border-[#d7deef] bg-white text-[#516494] md:h-[2.2rem] md:w-[2.2rem]"
+          className="grid h-9 w-9 place-items-center rounded-full border border-[#d7deef] bg-white text-[#516494] shadow-[0_4px_12px_rgba(31,43,95,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff] md:h-[2.2rem] md:w-[2.2rem]"
           aria-label="Open sidebar"
           onClick={onOpenSidebar}
         >
           ☰
         </button>
-        <h1 className="mt-0.5 text-2xl leading-tight text-slate-900">Welcome back</h1>
+        <h1 className="mt-0.5 text-2xl font-semibold tracking-tight text-slate-900 max-[720px]:text-xl max-[420px]:text-lg">
+          Welcome back
+        </h1>
       </div>
 
       <div className="grid w-auto max-w-none items-center gap-2 justify-self-end sm:grid-cols-[auto_auto] md:grid-cols-[auto_auto_auto] md:justify-self-stretch lg:justify-self-end max-[720px]:w-full max-[720px]:grid-cols-[auto_auto_auto] max-[720px]:justify-between max-[720px]:justify-self-start">
         <div className="inline-flex items-center gap-2 sm:justify-self-start" aria-label="Top bar actions">
           <button
             type="button"
-            className="relative grid h-10 w-10 place-items-center rounded-full border border-[#d7deef] bg-white text-[#516494]"
+            className="relative grid h-10 w-10 place-items-center rounded-full border border-[#d7deef] bg-white text-[#516494] shadow-[0_4px_12px_rgba(31,43,95,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#c8d3ef] hover:bg-[#f7f9ff]"
             aria-label="Notifications"
           >
             🔔

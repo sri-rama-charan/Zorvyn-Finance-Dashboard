@@ -15,7 +15,7 @@ export function SpendingHeatmap({ formatCurrency, currency, heatmapWeeks, heatma
       <SectionPanelHeader title="Spending Heatmap" actionLabel="Last 4 weeks" actionDisabled />
 
       <div className="grid gap-2">
-        <div className="grid grid-cols-7 gap-1 text-[0.7rem] uppercase text-[#7a88b8]">
+        <div className="grid grid-cols-7 gap-1 text-[0.7rem] uppercase tracking-[0.08em] text-[#7a88b8]">
           {dayLabels.map((label, index) => (
             <span key={`label-${index}`} className="text-center">
               {label || '-'}
@@ -31,7 +31,7 @@ export function SpendingHeatmap({ formatCurrency, currency, heatmapWeeks, heatma
               return (
                 <div
                   key={day.date}
-                  className="h-8 rounded-lg border border-[#e4e9f7]"
+                  className="h-8 rounded-lg border border-[#e4e9f7] shadow-[0_3px_8px_rgba(31,43,95,0.06)]"
                   style={{ backgroundColor: `rgba(86, 115, 255, ${alpha})` }}
                   title={`${day.date} • ${formatCurrency(day.value, currency)}`}
                 ></div>
