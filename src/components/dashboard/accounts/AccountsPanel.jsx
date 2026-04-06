@@ -1,10 +1,24 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { Modal } from '../../shared/Modal'
 import { PanelCard } from '../../shared/PanelCard'
 import { PanelSelect } from '../../shared/PanelControls'
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
 
-export function AccountsPanel({ role, activeAccount, setActiveAccount, account, formatCurrency }) {
+export function AccountsPanel({
+  role,
+  activeAccount,
+  setActiveAccount,
+  account,
+  formatCurrency,
+  onUpdateCard,
+  onAddCard,
+  onRemoveCard,
+}) {
   const cardScrollRef = useRef(null)
+  const [editingIndex, setEditingIndex] = useState(null)
+  const [cardDraft, setCardDraft] = useState({ name: '', amount: 0, state: 'Active' })
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalMode, setModalMode] = useState('edit')
   const cardThemes = [
     {
       nameMatch: 'Visa',
@@ -53,6 +67,54 @@ export function AccountsPanel({ role, activeAccount, setActiveAccount, account, 
     el.scrollBy({ left: direction * amount, behavior: 'smooth' })
   }
 
+  const openEditModal = (index, card) => {
+    setEditingIndex(index)
+    setCardDraft({ name: card.name, amount: card.amount, state: card.state })
+    setModalMode('edit')
+    setIsModalOpen(true)
+  }
+
+  const openAddModal = () => {
+    setEditingIndex(null)
+    setCardDraft({ name: '', amount: 0, state: 'Active' })
+    setModalMode('add')
+    setIsModalOpen(true)
+  }
+
+  const saveModal = () => {
+    const payload = {
+      name: cardDraft.name.trim() || 'Card',
+      amount: Number(cardDraft.amount || 0),
+      state: cardDraft.state,
+    }
+
+    if (modalMode === 'add' && onAddCard) {
+      onAddCard(payload)
+    }
+
+    if (modalMode === 'edit' && editingIndex !== null) {
+      onUpdateCard(editingIndex, payload)
+    }
+
+    setEditingIndex(null)
+    setIsModalOpen(false)
+  }
+
+  const deleteCard = () => {
+    if (editingIndex === null) return
+    if (onRemoveCard) {
+      onRemoveCard(editingIndex)
+    }
+    setEditingIndex(null)
+    setIsModalOpen(false)
+  }
+
+  const getCardNumber = (index) => {
+    if (cardNumbers[index]) return cardNumbers[index]
+    const lastFour = String(3728 + index * 418).slice(-4)
+    return `**** ${lastFour}`
+  }
+
   return (
     <PanelCard>
       <SectionPanelHeader title="Accounts & Cards" actionLabel="Manage" actionDisabled={role === 'Viewer'} />
@@ -64,6 +126,7 @@ export function AccountsPanel({ role, activeAccount, setActiveAccount, account, 
           className="rounded-[0.68rem] px-2"
           value={activeAccount}
           onChange={(event) => setActiveAccount(event.target.value)}
+          disabled={role === 'Viewer'}
         >
           <option>Personal INR</option>
           <option>Savings EUR</option>
@@ -74,6 +137,15 @@ export function AccountsPanel({ role, activeAccount, setActiveAccount, account, 
       <div className="mb-2 flex items-center justify-between">
         <p className="m-0 text-[0.78rem] font-semibold text-[#50639b]">My cards</p>
         <div className="flex items-center gap-2">
+          {role === 'Admin' ? (
+            <button
+              type="button"
+              onClick={openAddModal}
+              className="rounded-full border border-[#dfe6fb] bg-white px-2.5 py-1 text-[0.7rem] font-bold text-[#4f67c8] shadow-sm"
+            >
+              Add card
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={() => scrollCards(-1)}
@@ -102,7 +174,7 @@ export function AccountsPanel({ role, activeAccount, setActiveAccount, account, 
           const theme =
             cardThemes.find((item) => card.name.includes(item.nameMatch)) ||
             fallbackThemes[index % fallbackThemes.length]
-          const number = cardNumbers[index] || account.cardNumber
+          const number = getCardNumber(index)
 
           return (
             <article
@@ -139,10 +211,94 @@ export function AccountsPanel({ role, activeAccount, setActiveAccount, account, 
               <div className="relative mt-2 text-[0.78rem] font-semibold" style={{ color: theme.accent }}>
                 {formatCurrency(card.amount, account.currency)}
               </div>
+
+              {role === 'Admin' ? (
+                <div className="relative mt-2 flex items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={() => openEditModal(index, card)}
+                    className="rounded-full bg-white/20 px-2 py-1 text-[0.65rem] font-semibold text-white"
+                  >
+                    Edit
+                  </button>
+                </div>
+              ) : null}
             </article>
           )
         })}
       </div>
+
+      <Modal
+        open={isModalOpen}
+        title={modalMode === 'add' ? 'Add card' : 'Edit card'}
+        onClose={() => {
+          setEditingIndex(null)
+          setIsModalOpen(false)
+        }}
+        actions={
+          <>
+            {modalMode === 'edit' ? (
+              <button
+                type="button"
+                onClick={deleteCard}
+                className="rounded-full border border-[#f3d1d6] bg-[#fff1f3] px-3 py-1 text-[0.75rem] font-bold text-[#c03950]"
+              >
+                Delete
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => {
+                setEditingIndex(null)
+                setIsModalOpen(false)
+              }}
+              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.75rem] font-bold text-[#4f67c8]"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={saveModal}
+              className="rounded-full bg-[#4f67c8] px-3 py-1 text-[0.75rem] font-bold text-white"
+            >
+              Save
+            </button>
+          </>
+        }
+      >
+        <div className="grid gap-3">
+          <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
+            Card name
+            <input
+              value={cardDraft.name}
+              onChange={(event) => setCardDraft((prev) => ({ ...prev, name: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85]"
+              placeholder="Card name"
+            />
+          </label>
+          <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
+            Amount
+            <input
+              type="number"
+              min="0"
+              value={cardDraft.amount}
+              onChange={(event) => setCardDraft((prev) => ({ ...prev, amount: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85]"
+            />
+          </label>
+          <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
+            State
+            <select
+              value={cardDraft.state}
+              onChange={(event) => setCardDraft((prev) => ({ ...prev, state: event.target.value }))}
+              className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85]"
+            >
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </label>
+        </div>
+      </Modal>
     </PanelCard>
   )
 }

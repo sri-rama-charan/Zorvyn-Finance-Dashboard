@@ -13,6 +13,8 @@ export function DashboardPerformance({
   expensePoints,
   breakdownGradient,
   topCategories,
+  role,
+  onUpdateMonthlySeries,
 }) {
   return (
     <TwoPanelSection>
@@ -24,6 +26,8 @@ export function DashboardPerformance({
         savingsRate={savingsRate}
         incomePoints={incomePoints}
         expensePoints={expensePoints}
+        role={role}
+        onUpdateMonthlySeries={onUpdateMonthlySeries}
       />
       <SpendingBreakdownCard
         onOpenInsightsRoute={onOpenInsightsRoute}
