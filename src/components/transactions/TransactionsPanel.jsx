@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { SectionPanelHeader } from '../shared/SectionPanelHeader'
-import { TransactionRow } from './TransactionRow'
 import { PanelCard } from '../shared/PanelCard'
-import { PanelInput, PanelSelect } from '../shared/PanelControls'
-import { Modal } from '../shared/Modal'
+import { TransactionsFilters } from './TransactionsFilters'
+import { TransactionsAdvancedFilters } from './TransactionsAdvancedFilters'
+import { TransactionsTable } from './TransactionsTable'
+import { TransactionsPagination } from './TransactionsPagination'
+import { TransactionEditorModal } from './TransactionEditorModal'
 
 export function TransactionsPanel({
   search,
@@ -165,240 +167,60 @@ export function TransactionsPanel({
           ) : null}
         </div>
       </div>
-      <div className={`mb-2 flex flex-wrap gap-2 ${filtersOpen ? 'max-[720px]:flex' : 'max-[720px]:hidden'}`}>
-        <PanelInput
-          type="search"
-          placeholder="Search transactions"
-          value={search}
-          onChange={(event) => {
-            setSearch(event.target.value)
-            setTransactionPage(1)
-          }}
-        />
-        <PanelSelect
-          value={transactionType}
-          onChange={(event) => {
-            setTransactionType(event.target.value)
-            setTransactionPage(1)
-          }}
-        >
-          <option value="all">All types</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-          <option value="transfer">Transfer</option>
-        </PanelSelect>
+      <TransactionsFilters
+        search={search}
+        setSearch={setSearch}
+        transactionType={transactionType}
+        setTransactionType={setTransactionType}
+        transactionStatus={transactionStatus}
+        setTransactionStatus={setTransactionStatus}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        setTransactionPage={setTransactionPage}
+        className={filtersOpen ? 'max-[720px]:flex' : 'max-[720px]:hidden'}
+      />
 
-        <PanelSelect
-          value={transactionStatus}
-          onChange={(event) => {
-            setTransactionStatus(event.target.value)
-            setTransactionPage(1)
-          }}
-        >
-          <option value="all">All status</option>
-          <option value="Completed">Completed</option>
-          <option value="Pending">Pending</option>
-        </PanelSelect>
+      <TransactionsAdvancedFilters
+        dateFrom={dateFrom}
+        setDateFrom={setDateFrom}
+        dateTo={dateTo}
+        setDateTo={setDateTo}
+        amountMin={amountMin}
+        setAmountMin={setAmountMin}
+        amountMax={amountMax}
+        setAmountMax={setAmountMax}
+        setTransactionPage={setTransactionPage}
+        className={filtersOpen ? 'max-[720px]:grid' : 'max-[720px]:hidden'}
+      />
 
-        <PanelSelect
-          value={sortBy}
-          onChange={(event) => {
-            setSortBy(event.target.value)
-            setTransactionPage(1)
-          }}
-        >
-          <option value="date-desc">Newest first</option>
-          <option value="date-asc">Oldest first</option>
-          <option value="amount-desc">Largest amount</option>
-          <option value="amount-asc">Smallest amount</option>
-        </PanelSelect>
-      </div>
+      <TransactionsTable
+        filteredTransactions={filteredTransactions}
+        formatCurrency={formatCurrency}
+        currency={currency}
+        showActions={showActions}
+        onEdit={openEditModal}
+        gridClassName={gridClassName}
+      />
 
-      <div className={`mb-3 grid grid-cols-[1fr_1fr_1fr_1fr] gap-2 max-[1040px]:grid-cols-2 max-[720px]:grid-cols-1 ${filtersOpen ? 'max-[720px]:grid' : 'max-[720px]:hidden'}`}>
-        <input
-          type="date"
-          value={dateFrom}
-          onChange={(event) => {
-            setDateFrom(event.target.value)
-            setTransactionPage(1)
-          }}
-          className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem]"
-          placeholder="From"
-        />
-        <input
-          type="date"
-          value={dateTo}
-          onChange={(event) => {
-            setDateTo(event.target.value)
-            setTransactionPage(1)
-          }}
-          className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem]"
-          placeholder="To"
-        />
-        <input
-          type="number"
-          min="0"
-          value={amountMin}
-          onChange={(event) => {
-            setAmountMin(event.target.value)
-            setTransactionPage(1)
-          }}
-          className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem]"
-          placeholder="Min amount"
-        />
-        <input
-          type="number"
-          min="0"
-          value={amountMax}
-          onChange={(event) => {
-            setAmountMax(event.target.value)
-            setTransactionPage(1)
-          }}
-          className="rounded-xl border border-[#e1e7f6] bg-white px-3 py-2 text-[0.78rem]"
-          placeholder="Max amount"
-        />
-      </div>
+      <TransactionsPagination
+        totalCount={totalCount}
+        startIndex={startIndex}
+        endIndex={endIndex}
+        pageItems={pageItems}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setTransactionPage={setTransactionPage}
+      />
 
-      <div className="overflow-visible rounded-[0.95rem] border border-[#e3e9f7]">
-        <div className={`grid items-center gap-2 bg-[#f5f8ff] px-4 py-3 text-[0.75rem] font-bold tracking-[0.04em] text-[#6a7caf] uppercase max-[720px]:grid-cols-[1fr_1.2fr_1fr] ${gridClassName}`}>
-          <span>Date</span><span>Description</span><span>Category</span><span className="max-[720px]:hidden">Type</span><span className="max-[720px]:hidden">Amount</span>{showActions ? <span className="text-right max-[720px]:hidden">Actions</span> : null}
-        </div>
-
-        {filteredTransactions.length > 0 ? (
-          filteredTransactions.map((transaction) => (
-            <TransactionRow
-              key={transaction.id}
-              transaction={transaction}
-              formatCurrency={formatCurrency}
-              currency={currency}
-              showActions={showActions}
-              onEdit={() => openEditModal(transaction)}
-              gridClassName={gridClassName}
-            />
-          ))
-        ) : (
-          <div className="p-4 text-center text-[0.88rem] text-[#678]">No transactions match the current filters.</div>
-        )}
-      </div>
-
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[0.78rem] text-[#6b7cb1]">
-        <span>
-          {totalCount ? `Showing ${startIndex}-${endIndex} of ${totalCount}` : 'No results'}
-        </span>
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => setTransactionPage(Math.max(currentPage - 1, 1))}
-            className="rounded-full border border-[#dfe6fb] bg-white px-2 py-1 text-[0.72rem] font-bold text-[#4f67c8]"
-            disabled={currentPage === 1}
-          >
-            Prev
-          </button>
-          {pageItems.map((item, index) => (
-            <button
-              key={`${item}-${index}`}
-              type="button"
-              onClick={() => typeof item === 'number' && setTransactionPage(item)}
-              className={`min-w-[2rem] rounded-full px-2 py-1 text-[0.72rem] font-bold ${
-                item === currentPage
-                  ? 'bg-[#4f67c8] text-white'
-                  : 'border border-[#dfe6fb] bg-white text-[#4f67c8]'
-              }`}
-              disabled={item === '...'}
-            >
-              {item}
-            </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => setTransactionPage(Math.min(currentPage + 1, totalPages))}
-            className="rounded-full border border-[#dfe6fb] bg-white px-2 py-1 text-[0.72rem] font-bold text-[#4f67c8]"
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </div>
-      </div>
-
-      <Modal
+      <TransactionEditorModal
         open={modalMode !== null}
-        title={modalMode === 'edit' ? 'Edit transaction' : 'Add transaction'}
+        modalMode={modalMode}
+        draft={draft}
+        setDraft={setDraft}
         onClose={closeModal}
-        actions={
-          <>
-            {modalMode === 'edit' ? (
-              <button
-                type="button"
-                onClick={deleteTransaction}
-                className="rounded-full border border-[#f3d1d6] bg-[#fff1f3] px-3 py-1 text-[0.75rem] font-bold text-[#c03950]"
-              >
-                Delete
-              </button>
-            ) : null}
-            <button
-              type="button"
-              onClick={closeModal}
-              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.75rem] font-bold text-[#4f67c8]"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={saveModal}
-              className="rounded-full bg-[#4f67c8] px-3 py-1 text-[0.75rem] font-bold text-white"
-            >
-              Save
-            </button>
-          </>
-        }
-      >
-        <div className="grid gap-3">
-          <div className="grid grid-cols-2 gap-2 max-[720px]:grid-cols-1">
-            <input
-              type="date"
-              value={draft.date}
-              onChange={(event) => setDraft((prev) => ({ ...prev, date: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
-            />
-            <input
-              placeholder="Description"
-              value={draft.description}
-              onChange={(event) => setDraft((prev) => ({ ...prev, description: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
-            />
-            <input
-              placeholder="Category"
-              value={draft.category}
-              onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
-            />
-            <input
-              type="number"
-              placeholder="Amount"
-              value={draft.amount}
-              onChange={(event) => setDraft((prev) => ({ ...prev, amount: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
-            />
-            <select
-              value={draft.type}
-              onChange={(event) => setDraft((prev) => ({ ...prev, type: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
-            >
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-              <option value="transfer">Transfer</option>
-            </select>
-            <select
-              value={draft.status}
-              onChange={(event) => setDraft((prev) => ({ ...prev, status: event.target.value }))}
-              className="rounded-lg border border-[#e1e7f6] px-2 py-1 text-[0.78rem]"
-            >
-              <option value="Completed">Completed</option>
-              <option value="Pending">Pending</option>
-            </select>
-          </div>
-        </div>
-      </Modal>
+        onSave={saveModal}
+        onDelete={deleteTransaction}
+      />
     </PanelCard>
   )
 }

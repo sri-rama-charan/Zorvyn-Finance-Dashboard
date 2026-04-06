@@ -1,42 +1,8 @@
+import { useState } from 'react'
 import { SectionPanelHeader } from '../../shared/SectionPanelHeader'
 import { PanelCard } from '../../shared/PanelCard'
-import { Modal } from '../../shared/Modal'
-import { useEffect, useState } from 'react'
-
-function limitPercent(limit) {
-  if (!limit.total) return 0
-  return Math.round((limit.used / limit.total) * 100)
-}
-
-function LimitBar({ label, limit, currency, formatCurrency }) {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => setIsVisible(true))
-    return () => cancelAnimationFrame(frame)
-  }, [])
-
-  const percent = limitPercent(limit)
-  const tone = 'from-[#224f8f] to-[#97e97a]'
-
-  return (
-    <div className="grid gap-2">
-      <div className="flex items-center justify-between">
-        <p className="m-0 text-[0.86rem] font-semibold text-[#27357a]">{label}</p>
-        <p className="m-0 text-[0.84rem] font-bold text-[#4f5f97]">{percent}%</p>
-      </div>
-      <div className="h-2 rounded-full bg-[#ebeffa]" role="presentation">
-        <div 
-          className={`h-full rounded-full bg-gradient-to-r ${tone} transition-[width] duration-1000 ease-out`} 
-          style={{ width: isVisible ? `${percent}%` : '0%' }}
-        ></div>
-      </div>
-      <p className="m-0 text-[0.78rem] text-[#6676ad]">
-        {formatCurrency(limit.used, currency)} of {formatCurrency(limit.total, currency)} spent
-      </p>
-    </div>
-  )
-}
+import { LimitBar } from './LimitBar'
+import { SpendLimitsModal } from './SpendLimitsModal'
 
 export function SpendLimits({ account, formatCurrency, role, onUpdateLimit }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -92,84 +58,13 @@ export function SpendLimits({ account, formatCurrency, role, onUpdateLimit }) {
         />
       </div>
 
-      <Modal
+      <SpendLimitsModal
         open={isModalOpen}
-        title="Edit limits"
+        draft={draft}
+        setDraft={setDraft}
         onClose={() => setIsModalOpen(false)}
-        actions={
-          <>
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(false)}
-              className="rounded-full border border-[#dfe6fb] bg-white px-3 py-1 text-[0.75rem] font-bold text-[#4f67c8]"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={saveModal}
-              className="rounded-full bg-[#4f67c8] px-3 py-1 text-[0.75rem] font-bold text-white"
-            >
-              Save
-            </button>
-          </>
-        }
-      >
-        <div className="grid gap-3">
-          <div className="grid grid-cols-2 gap-2">
-            <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-              Daily used
-              <input
-                type="number"
-                min="0"
-                value={draft.dailyUsed}
-                onChange={(event) =>
-                  setDraft((prev) => ({ ...prev, dailyUsed: event.target.value }))
-                }
-                className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-sm"
-              />
-            </label>
-            <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-              Daily total
-              <input
-                type="number"
-                min="0"
-                value={draft.dailyTotal}
-                onChange={(event) =>
-                  setDraft((prev) => ({ ...prev, dailyTotal: event.target.value }))
-                }
-                className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-sm"
-              />
-            </label>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-              Monthly used
-              <input
-                type="number"
-                min="0"
-                value={draft.monthlyUsed}
-                onChange={(event) =>
-                  setDraft((prev) => ({ ...prev, monthlyUsed: event.target.value }))
-                }
-                className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-sm"
-              />
-            </label>
-            <label className="grid gap-1 text-[0.74rem] text-[#6f7eb0]">
-              Monthly total
-              <input
-                type="number"
-                min="0"
-                value={draft.monthlyTotal}
-                onChange={(event) =>
-                  setDraft((prev) => ({ ...prev, monthlyTotal: event.target.value }))
-                }
-                className="rounded-lg border border-[#e1e7f6] bg-white px-2 py-1 text-[0.78rem] text-[#2b3f85] shadow-sm"
-              />
-            </label>
-          </div>
-        </div>
-      </Modal>
+        onSave={saveModal}
+      />
     </PanelCard>
   )
 }
