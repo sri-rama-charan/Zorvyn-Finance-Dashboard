@@ -1,8 +1,25 @@
 import { useMemo } from 'react'
 
-export function useDashboardData({ account, search, transactionType, sortBy, insightRange }) {
+export function useDashboardData({
+  account,
+  search,
+  transactionType,
+  transactionStatus,
+  sortBy,
+  amountMin,
+  amountMax,
+  dateFrom,
+  dateTo,
+  transactionPage,
+  pageSize = 10,
+  insightRange,
+}) {
   const filteredTransactions = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase()
+    const minAmount = amountMin === '' ? null : Number(amountMin)
+    const maxAmount = amountMax === '' ? null : Number(amountMax)
+    const fromDate = dateFrom ? new Date(dateFrom).getTime() : null
+    const toDate = dateTo ? new Date(dateTo).getTime() : null
 
     const rows = account.transactions.filter((transaction) => {
       const matchesSearch =
@@ -13,8 +30,15 @@ export function useDashboardData({ account, search, transactionType, sortBy, ins
           .includes(normalizedSearch)
 
       const matchesType = transactionType === 'all' || transaction.type === transactionType
+      const matchesStatus = transactionStatus === 'all' || transaction.status === transactionStatus
+      const absAmount = Math.abs(transaction.amount)
+      const matchesMin = minAmount === null || absAmount >= minAmount
+      const matchesMax = maxAmount === null || absAmount <= maxAmount
+      const transactionTime = new Date(transaction.date).getTime()
+      const matchesFrom = fromDate === null || transactionTime >= fromDate
+      const matchesTo = toDate === null || transactionTime <= toDate
 
-      return matchesSearch && matchesType
+      return matchesSearch && matchesType && matchesStatus && matchesMin && matchesMax && matchesFrom && matchesTo
     })
 
     rows.sort((first, second) => {
@@ -27,7 +51,31 @@ export function useDashboardData({ account, search, transactionType, sortBy, ins
     })
 
     return rows
-  }, [account.transactions, search, transactionType, sortBy])
+  }, [
+    account.transactions,
+    search,
+    transactionType,
+    transactionStatus,
+    sortBy,
+    amountMin,
+    amountMax,
+    dateFrom,
+    dateTo,
+  ])
+
+  const { pagedTransactions, transactionPageCount, transactionTotalCount, currentPage } = useMemo(() => {
+    const totalCount = filteredTransactions.length
+    const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
+    const page = Math.min(Math.max(transactionPage, 1), totalPages)
+    const start = (page - 1) * pageSize
+    const end = start + pageSize
+    return {
+      pagedTransactions: filteredTransactions.slice(start, end),
+      transactionPageCount: totalPages,
+      transactionTotalCount: totalCount,
+      currentPage: page,
+    }
+  }, [filteredTransactions, transactionPage, pageSize])
 
   const topCategories = useMemo(() => {
     const total = account.spending.reduce((sum, item) => sum + item.amount, 0)
@@ -109,7 +157,10 @@ export function useDashboardData({ account, search, transactionType, sortBy, ins
   const activeRangeMax = Math.max(...activeRangeSeries.map((item) => item.value), 1)
 
   return {
-    filteredTransactions,
+    filteredTransactions: pagedTransactions,
+    transactionPageCount,
+    transactionTotalCount,
+    transactionPage: currentPage,
     topCategories,
     breakdownGradient,
     incomePoints,
